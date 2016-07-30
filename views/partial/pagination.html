@@ -1,0 +1,14 @@
+<!--分页-->
+<div class="row">
+    <div class="col-lg-4 " style="line-height:34px;margin: 20px 0;">
+        总数{{vm.totalCount}}条 共{{numPages}}页
+    </div>
+    <div class="col-lg-2" style="line-height:34px;text-align: right;margin: 20px 0;">
+        <span >每页{{vm.pageSize}}条</span>
+    </div>
+    <div class="col-lg-6 col-sm-6 col-md-7">
+        <nav class="xw-pagination-container">
+            <uib-pagination previous-text="上一页" next-text="下一页" max-size="10" rotate="false" num-pages="numPages" total-items="vm.totalCount" items-per-page="vm.pageSize" ng-model="vm.currentPage" ng-change="vm.getServingListNew()"></uib-pagination>
+        </nav>
+    </div>
+</div>

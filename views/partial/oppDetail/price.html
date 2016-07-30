@@ -1,0 +1,222 @@
+<div class="det">
+    <form class="form-horizontal" role="form" name="bargainForm" novalidate>
+        <div class="divline">
+
+            <li class="mb10"><h4 class="col-md-2 col-sm-2">服务报价</h4></li>
+
+            <!--转店-->
+            <div class="form-group" ng-if="vm.pluginId == vm.transferPluginId">
+                <div class="form-group">
+                    <label class="col-sm-2 col-md-2 control-label" style="padding-top: 12px;"><span
+                        class="required">*</span>选择服务方式</label>
+
+                    <div class="radio col-sm-10 col-md-10">
+                        <label class="flef pt5">
+                            <input type="radio" ng-model="vm.mode" value="{{vm.serveByResult}}"
+                                   ng-click="vm.changeMode()"> 服务到转出为止
+                        </label>
+
+                        <label class="flef pt5" style="margin-left: 20px;">
+                            <input type="radio" ng-model="vm.mode" value="{{vm.serveByCycle}}"
+                                   ng-click="vm.changeMode()">服务到指定时间
+                        </label>
+
+                        <div class="col-sm-4 col-md-4" ng-if="vm.mode == vm.serveByCycle">
+                            <select class="form-control" ng-model="vm.advertising"
+                                    ng-options="advertising.value as advertising.name for advertising in vm.advertisingSelect"
+                                    ng-change="vm.getPrice()"></select>
+                        </div>
+
+                        <!--<div class="col-sm-3 col-md-3" ng-if="vm.mode == vm.serveByCycle">-->
+                        <!--<select class="form-control" ng-if="vm.transferType == vm.shopTransfer" ng-model="vm.cycle"-->
+                        <!--ng-options="cycle.value as cycle.name for cycle in vm.shopTransferCycleSelect"-->
+                        <!--ng-change="vm.getPrice()"></select>-->
+                        <!--</div>-->
+                        <!--<div class="col-sm-3 col-md-3" ng-if="vm.mode == vm.serveByCycle">-->
+                        <!--<select class="form-control" ng-if="vm.transferType == vm.attractInvestment"-->
+                        <!--ng-model="vm.cycle"-->
+                        <!--ng-options="cycle.value as cycle.name for cycle in vm.attractInvestmentCycleSelect"-->
+                        <!--ng-change="vm.getPrice()"></select>-->
+                        <!--</div>-->
+                    </div>
+                </div>
+
+                <div class="form-group" ng-if="vm.mode == vm.serveByCycle">
+                    <div class="radio col-lg-offset-2 col-md-offset-2 col-xs-offset-2">
+                        <label>
+                            <input ng-model="vm.transferCycle"  type="radio" value="15" ng-click="vm.selectTransferCycle()" name="cycleSelect">服务15天
+                        </label>
+                        <label >
+                            <input ng-model="vm.transferCycle"  type="radio" value="30" ng-click="vm.selectTransferCycle()" name="cycleSelect" checked>服务30天
+                        </label>
+                        <label >
+                            <input class="radio-to-label" ng-model="vm.transferCycle" type="radio"  value="-1" >其它服务时间
+                            <label ng-if="vm.transferCycle == '-1'">
+                                <input class="input-md" type="number" ng-model="vm.cycle" placeholder="请填写服务天数" required max="180" min="1" ng-pattern="/^(-?[0-9]+)$/" ng-change="vm.getTransferPrice(bargainForm.$valid)" name="cycle">(限填写1-180天数)
+                            </label>
+                        </label>
+                    </div>
+                </div>
+
+
+            </div>
+
+
+            <!--红字，隐藏的警告-->
+            <div class="form-group">
+                <div class="col-sm-2 col-md-2"></div>
+                <div class="col-sm-5 col-md-5">
+                    <p style="color:red" ng-show="bargainForm.cycle.$error.required">服务天数不能为空</p>
+                    <p style="color:red" ng-show="bargainForm.cycle.$error.max">服务天数不能大于180</p>
+                    <p style="color:red" ng-show="bargainForm.cycle.$error.min">服务天数不能小于1</p>
+                    <p style="color:red" ng-show="bargainForm.cycle.$error.pattern">服务天数不能有小数</p>
+                    <p style="color:red" ng-show="bargainForm.cycle.$error.number">服务天数必须是数字</p>
+                    <!--<p style="color:red" ng-show="vm.errorMessage">{{vm.errorMessage}}</p>-->
+                </div>
+            </div>
+
+            <!--找店-->
+            <div class="form-group" ng-if="vm.pluginId == vm.sitingPluginId">
+                <label class=" col-sm-2 col-md-2 control-label" style="padding-top: 12px;"><span
+                    class="required">*</span>选择服务方式</label>
+
+                <div class="radio col-sm-9 col-md-9">
+                    <label class="flef pt5">
+                        <input type="radio" ng-model="vm.mode" value="{{vm.serveByResult}}"
+                               ng-click="vm.changeMode()"> 服务到找到为止
+                    </label>
+
+                    <label class="flef pt5" style="margin-left: 20px;">
+                        <input type="radio" ng-model="vm.mode" value="{{vm.serveByCycle}}"
+                               ng-click="vm.changeMode()"> 服务到指定时间
+                    </label>
+
+                    <div class="col-sm-3 col-md-3" ng-if="vm.mode == vm.serveByCycle">
+                        <select class="form-control"
+                                ng-options="cycle.value as cycle.name for cycle in vm.sitingCycleSelect"
+                                ng-change="vm.getPrice()" ng-model="vm.cycle"></select>
+                    </div>
+                </div>
+
+            </div>
+            <div class="cle"></div>
+
+            <!--招聘-->
+            <div class="form-group" ng-if="vm.pluginId == vm.recruitmentPluginId">
+                <label class="col-sm-2 col-md-2  control-label"><span class="required">*</span>服务方式</label>
+                <div class="col-sm-5 col-md-5"><p class="form-control-static col-md-6 col-sm-6">服务到指定时间</p>
+                    <select class="form-control-static col-md-4 col-sm-4"
+                            ng-options="cycle.value as cycle.name for cycle in vm.recruitmentCycleSelect"
+                            ng-change="vm.getPrice()" ng-model="vm.cycle"></select>
+                </div>
+            </div>
+
+            <!--消费-->
+            <div class="form-group" ng-if="vm.pluginId == vm.reservationPluginId">
+                <label class="col-sm-2 col-md-2  control-label"><span class="required">*</span>选择服务时间</label>
+                <div class="radio col-sm-9 col-md-9">
+                    <label class="flef pt5">
+                        <input type="radio" ng-model="vm.cycle" value="180">服务半年
+                    </label>
+
+                    <label class="flef pt5" style="margin-left: 20px;">
+                        <input type="radio" ng-model="vm.cycle" value="365">服务一年
+                    </label>
+                </div>
+            </div>
+
+            <!--转店找店和招聘有优惠价格-->
+            <div ng-if="vm.pluginId == vm.transferPluginId || vm.pluginId == vm.sitingPluginId || vm.pluginId == vm.recruitmentPluginId">
+                <div class="form-group">
+                    <div class="col-sm-2 col-md-2 control-label"></div>
+                    <div class="col-sm-5 col-md-5 bargain-num">
+                        当前标准报价 <span style="color:red;">{{vm.price}}元</span>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="col-sm-2 col-md-2  control-label">优惠价格</label>
+                    <div class="col-sm-3 col-md-3">
+                        <input name="discountedPrice" class="form-control" type="number" ng-model="vm.discountedPrice"
+                               min="0" max="9999999" maxlength="7" ng-pattern="/^(-?[0-9]+)$/">
+                    </div>
+                </div>
+
+                <!--红字，隐藏的警告-->
+                <div class="form-group" ng-show="vm.submitted">
+                    <div class="col-sm-2 col-md-2"></div>
+                    <div class="col-sm-5 col-md-5">
+                        <p style="color:red" ng-show="bargainForm.discountedPrice.$error.min">优惠价格不能为负数</p>
+                        <p style="color:red" ng-show="bargainForm.discountedPrice.$error.max">优惠价格不能大于9999999</p>
+                        <p style="color:red" ng-show="bargainForm.discountedPrice.$error.pattern">优惠价格不能有小数</p>
+                        <p style="color:red" ng-show="bargainForm.discountedPrice.$error.number">优惠价格必须是数字</p>
+                    </div>
+                </div>
+
+                <!--转店和找店需要预付-->
+                <div ng-if="vm.pluginId != vm.recruitmentPluginId">
+                    <div class="form-group">
+                        <label class="col-sm-2 col-md-2 col-xs-offset-2">
+                            <input type="checkbox" ng-model="vm.isNeedPrepay" value="1">需要预付
+                        </label>
+                    </div>
+                    <div class="form-group" ng-if="vm.isNeedPrepay">
+                        <label class="col-sm-2 col-md-2  control-label">预付金额</label>
+                        <div class="col-sm-3 col-md-3">
+                            <input name="prepayPrice" class="form-control" type="number" ng-model="vm.prepayPrice"
+                                   min="0" max="{{vm.discountedPrice}}" ng-pattern="/^(-?([0-9]+)|(-?[0-9]+\.[0-9]{1,2}))$/">
+                        </div>
+                    </div>
+
+                    <div class="form-group" ng-show="vm.submitted">
+                        <div class="col-sm-2 col-md-2"></div>
+                        <div class="col-sm-5 col-md-5">
+                            <p style="color:red" ng-show="bargainForm.prepayPrice.$error.min">预付金额不能为负数</p>
+                            <p style="color:red" ng-show="bargainForm.prepayPrice.$error.max">预付金额不能大于优惠价格</p>
+                            <p style="color:red" ng-show="bargainForm.prepayPrice.$error.pattern">预付金额不能超过2位小数</p>
+                            <p style="color:red" ng-show="bargainForm.prepayPrice.$error.number">预付金额只能是数字</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!--<div ng-if="vm.pluginId == vm.transferPluginId || vm.pluginId == vm.sitingPluginId || vm.pluginId == vm.recruitmentPluginId">-->
+            <!--<div class="form-group">-->
+            <!--<label class="col-sm-10 col-md-10  col-xs-offset-2">-->
+            <!--<input type="checkbox" ng-model="vm.offlineRecept" value="1">已经线下收到款了（直接提交给财务审核）-->
+            <!--</label>-->
+            <!--</div>-->
+            <!--</div>-->
+
+            <!--消费返点比例-->
+            <div ng-if="vm.pluginId == vm.reservationPluginId">
+                <div class="form-group">
+                    <div class="col-sm-2 col-md-2 control-label"></div>
+                    <div class="col-sm-5 col-md-5 bargain-num">
+                        当前标准报价 <span style="color:red;">{{vm.rate}}%</span>
+                    </div>
+                </div>
+                <div class="form-group mb40">
+                    <label class="col-sm-2 col-md-2 control-label">
+                        返点比例<span style="padding-left:20px;"></span>
+                    </label>
+
+                    <div class="col-sm-5 col-md-5" style="padding-top: 5px;position: relative;">
+                        <slider ng-model="vm.rate" min="0" step="1" max="30"></slider>
+                        <span style="position: absolute; left: 0px;bottom: -15px;">0%</span>
+                        <span style="position: absolute; right: 0px;bottom: -15px;">30%</span>
+                    </div>
+                </div>
+
+            </div>
+
+
+            <div class="cle"></div>
+            <li class="mb40 col-sm-offset-2 col-md-offset-2"><input type="button" value="确认，发送签约通知"
+                                                                    class="btn btn-primary btn-lg "
+                                                                    ng-click="vm.bargain(bargainForm.$valid)"></li>
+
+
+        </div>
+    </form>
+</div>

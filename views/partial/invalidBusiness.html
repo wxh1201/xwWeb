@@ -1,0 +1,46 @@
+<div class="modal-header">
+  <h3 class="modal-title">信息无效</h3>
+</div>
+<div class="modal-body">
+  <form name="invalidBusinessForm">
+    <div class="radio">
+      <label>
+        <input type="radio" name="reason" ng-model="vm.reason" value="不需要服务" required>
+        不需要服务
+      </label>
+    </div>
+    <div class="radio">
+      <label>
+        <input type="radio" name="reason" ng-model="vm.reason" value="已收费" required>
+        已收费
+      </label>
+    </div>
+    <div class="radio">
+      <label>
+        <input type="radio" name="reason" ng-model="vm.reason" value="中介信息" required>
+        中介信息
+      </label>
+    </div>
+    <div class="radio">
+      <label>
+        <input type="radio" name="reason" ng-model="vm.reason" value="电话有误" required>
+        电话有误
+      </label>
+    </div>
+    <div class="radio">
+      <label>
+        <input type="radio" name="reason" ng-model="vm.reason" value="店铺不存在" required>
+        店铺不存在
+      </label>
+    </div>
+    <div ng-show="vm.submitted">
+      <span style="color:red;" ng-show="invalidBusinessForm.reason.$error.required">请选择原因</span>
+      <span style="color:red;" ng-show="vm.errorMessage">{{vm.errorMessage}}</span>
+    </div>
+  </form>
+
+</div>
+<div class="modal-footer">
+  <button class="btn btn-primary" type="button" ng-click="vm.submit(invalidBusinessForm.$valid)">确定,放弃业务</button>
+  <button class="btn btn-warning" type="button" ng-click="vm.cancel()">取消</button>
+</div>

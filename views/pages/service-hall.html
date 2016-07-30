@@ -1,0 +1,129 @@
+<section>
+	<ol class="breadcrumb ">
+		<li>服务大厅</li>
+	</ol>
+</section>
+
+<div class="row">
+	<!-- 类型 -->
+	<div class="col-lg-1 col-md-2 col-sm-2">
+		<select class="select-s" name="plugin" ng-model="vm.pluginId" ng-options="plginId.value as plginId.name for plginId in vm.pluginIdSelect"></select>
+	</div>
+	<!-- 行业 -->
+	<div class="col-lg-1 col-md-2 col-sm-2">
+		<select class="select-s" name="industry" ng-model="vm.industryId" ng-change="vm.loadSmallIndustries(vm.industryId)" ng-options="industry.c as industry.n for industry in vm.industriesSelect">
+            <option value="">行业</option>
+        </select>
+	</div>
+	<!-- 小行业 -->
+	<div ng-if="vm.smallIndustriesSelect.length > 0" class="col-lg-1 col-md-2 col-sm-2">
+		<select class="select-s" name="smallIndustry" ng-model="vm.smallIndustryId" ng-options="smallIndustry.c as smallIndustry.n for smallIndustry in vm.smallIndustriesSelect">
+            <option value="">小行业</option>
+        </select>
+	</div>
+
+	<!-- 选择区域 -->
+	<div class="col-lg-1 col-md-2 col-sm-2">
+		<select class="select-s" name="city" ng-model="vm.cityId" ng-init="vm.cityId = vm.cities[0].c" ng-change="vm.loadDistricts(vm.cityId)" ng-options="city.c as city.n for city in vm.cities"></select>
+	</div>
+	<div ng-if="vm.districtsSelect.length > 0" class="col-lg-1 col-md-2 col-sm-2">
+		<select class="select-s" name="district" ng-model="vm.districtId" ng-init="vm.districtId = vm.districtsSelect[0].c" ng-change="vm.loadBusinessAreas(vm.districtId)" ng-options="district.c as district.n for district in vm.districtsSelect">
+			<!--<option value="" selected>选择区</option>-->
+		</select>
+	</div>
+
+	<!-- 选择商圈 -->
+	<div ng-if="vm.businessAreasSelect && vm.businessAreasSelect.length > 0" class="col-lg-1 col-md-2 col-sm-2">
+		<select ng-change="vm.loadBusinessAreas(vm.districtId)" class="select-s" name="businessArea" ng-model="vm.businessAreaId" ng-options="businessArea.c as businessArea.n for businessArea in vm.businessAreasSelect">
+            <option value="">选择商圈</option>
+        </select>
+	</div>
+
+	<!-- 签约时间排序 -->
+	<div class="col-lg-1 col-md-2 col-sm-2">
+		<select class="select-s" name="orderBy" ng-model="vm.orderBy" ng-options="orderBy.value as orderBy.name for orderBy in vm.orderBySelect"></select>
+	</div>
+
+	<!-- 查询按钮 -->
+	<!--<div class="col-lg-1 col-md-2 col-sm-3">-->
+	<button ng-click="vm.getServingListNew('query')" class="btn btn-success">查询</button>
+	<!--</div>-->
+
+</div>
+
+<form class="form-inline" name="searchForm">
+	<div class="form-group">
+		<label>关键字搜索：</label>
+		<input ng-model="vm.mobile" mobile type="text" class="form-control" placeholder="输入商户号码">
+	</div>
+	<button ng-click="vm.getServingListNew('search')" ng-disabled="!searchForm.$valid" class="btn btn-success">搜索</button>
+</form>
+
+<table class="table table-bordered table-hover">
+	<thead>
+		<tr>
+			<th style="width: 80px;">类型</th>
+			<th style="width: 500px;">客户需求</th>
+			<th style="width: 200px;">客户联系方式</th>
+			<th style="width: 180px;">签约时间</th>
+			<th>操作</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr ng-repeat="myService in vm.serviceList track by $index">
+			<!-- 类型 -->
+			<td>
+				<div class="text-info">{{myService.pluginId | pluginIdFilter}}</div>
+			</td>
+			<!-- 客户需求 -->
+			<td>
+				<!-- 需求标题 、 面积、租金 -->
+				<div>
+					<!-- 转店 -->
+					<div ng-if="myService.pluginId==='xw:transfer'">
+						<div><a ui-sref="index.main.serviceDetail({serviceId:myService.id,active:0,cssId:myService.cssId,serviceStatus:myService.serviceStatus})" target="_blank">{{myService.title}}</a></div>
+						<div>{{myService.area}}平米&nbsp;&nbsp;&nbsp;&nbsp;{{myService.rent/100}}元/月</div>
+						
+					</div>
+					<!-- 找店 -->
+					<div ng-if="myService.pluginId==='xw:siting'">
+						<div><a ui-sref="index.main.serviceDetail({serviceId:myService.id,active:0,cssId:myService.cssId,serviceStatus:myService.serviceStatus})" target="_blank">{{myService.title}}</a></div>
+						<div>{{myService.minArea}}-{{myService.maxArea}}平米&nbsp;&nbsp;&nbsp;&nbsp;{{myService.minRent}}-{{myService.maxRent}}元/月</div>
+					</div>
+					<!-- 招聘、消费 -->
+					<div ng-if="myService.pluginId==='xw:recruitment' || myService.pluginId==='xw:reservation'">
+						<div><a ui-sref="index.main.serviceDetail({serviceId:myService.id,active:0,cssId:myService.cssId,serviceStatus:myService.serviceStatus})" target="_blank">{{myService.shopName}}</a></div>
+						<div>{{myService.address}}</div>
+					</div>
+				</div>
+			</td>
+			<!-- 客户联系方式 -->
+			<td>
+				<div>姓名:{{myService.nickname}}</div>
+				<div>电话:{{myService.mobile}}</div>
+			</td>
+			<!-- 签约时间 -->
+			<td>
+				<div>{{myService.startAt | date:'yyyy-MM-dd'}}</div>
+			</td>
+			<!-- 操作 -->
+			<td>
+				<a ng-click="vm.take(myService)" ng-hide="myService.hide">领取</a>&nbsp;
+				<a ui-sref="index.main.serviceDetail({serviceId:myService.id,active:0,cssId:myService.cssId,serviceStatus:myService.serviceStatus})" target="_blank">查看详情</a>
+				<a ui-sref="index.main.serviceDetail({serviceId:myService.id, active:'1',cssId:myService.cssId,serviceStatus:myService.serviceStatus})" target="_blank">服务备注</a>
+				<a ui-sref="index.main.serviceDetail({serviceId:myService.id, active:'2',cssId:myService.cssId,serviceStatus:myService.serviceStatus})" target="_blank">服务记录</a>
+			</td>
+		</tr>
+	</tbody>
+</table>
+<!--底部分页-->
+<div class="row">
+	<div class="col-lg-5" style="line-height:34px;">
+		总数{{vm.totalCount}}条 每页<select ng-model="vm.pageSize" ng-options="pageSize for pageSize in [10,20,30,50,60,100]" ng-change="vm.getServingListNew(vm.serviceHallQueryCriteria)"></select>条 共{{vm.numPages}}页
+	</div>
+	<div class="col-lg-7">
+		<nav class="xw-pagination-container">
+			<uib-pagination boundary-links="true" first-text="首页" last-text="末页" previous-text="上一页" next-text="下一页" max-size="10" rotate="false" num-pages="vm.numPages" total-items="vm.totalCount" items-per-page="vm.pageSize" ng-model="vm.currentPage" ng-change="vm.getServingListNew(vm.serviceHallQueryCriteria)"></uib-pagination>
+		</nav>
+	</div>
+</div>

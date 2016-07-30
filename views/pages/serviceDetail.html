@@ -1,0 +1,272 @@
+<section class="">
+    <ol class="breadcrumb ">
+        <li>服务详情</li>
+    </ol>
+</section>
+
+<!--新的服务详情-->
+<div class="">
+    <div class="row">
+        <div class="merchantInfo br4 col-lg-6 col-md-6 col-sm-6 col-xs-6 ">
+            <h6>商家信息</h6>
+            <hr>
+            <div><label>商家昵称:</label> <span>{{vm.serviceDetail.name}}</span></div>
+            <div><label>商家手机:</label> <span>{{vm.serviceDetail.mobile}}</span></div>
+            <div><label>商家店名:</label> <span>{{vm.serviceDetail.shopName }}</span></div>
+        </div>
+        <div class="serviceInfo br4 col-lg-6 col-md-6 col-sm-6 col-xs-6">
+            <h6>服务信息</h6>
+            <hr>
+            <div><label>服务方式:</label>
+                <span ng-if="vm.serviceDetail.mode == 1 && vm.serviceDetail.pluginId == vm.transferPluginId && vm.requirement[0].content.type == 1">服务到转出为止
+                </span>
+                <span ng-if="vm.serviceDetail.mode == 1 && vm.serviceDetail.pluginId == vm.transferPluginId && vm.requirement[0].content.type == 2">服务到租出为止
+                </span>
+                <span ng-if="vm.serviceDetail.mode == 1 && vm.serviceDetail.pluginId == vm.sitingPluginId">服务到找到为止
+                </span>
+
+                <span ng-if="vm.serviceDetail.mode == 2">服务<span ng-if="vm.serviceDetail.calMonth != 0">{{vm.serviceDetail.calMonth}}个月</span><span ng-if="vm.serviceDetail.calDay != 0">{{vm.serviceDetail.calDay}}天</span></span>
+            </div>
+            <div ng-if="vm.serviceDetail.pluginId != vm.reservationPluginId">
+                <label>合同金额:</label>
+                <span class="text-danger">{{vm.serviceDetail.contractPrice/100}}元</span>
+            </div>
+            <div ng-hide="vm.serviceDetail.pluginId == vm.recruitmentPluginId">
+                <label>预付:</label>
+                <span class="text-danger" ng-if="vm.serviceDetail.pluginId != vm.reservationPluginId">{{vm.serviceDetail.perPrice}}元</span>
+                <span class="text-danger" ng-if="vm.serviceDetail.pluginId == vm.reservationPluginId">{{vm.serviceDetail.perPrice}}%</span>
+            </div>
+            <div>
+                <label>开始:</label>
+                <span>{{vm.serviceDetail.startAt | date: 'yyyy-MM-dd HH:mm:ss'}}</span>
+                <span ng-if="vm.serviceDetail.status  == 1" class="text-danger alert">服务中</span>
+                <span ng-if="vm.serviceDetail.status  == 2" class="text-danger alert">已结束</span>
+                <span ng-if="vm.serviceDetail.status  == 3" class="text-danger alert">已过期</span>
+            </div>
+            <div ng-hide="vm.serviceDetail.mode == 1">
+                <label >结束:</label> <span>{{vm.serviceDetail.endAt | date: 'yyyy-MM-dd HH:mm:ss'}}
+            </span>
+            </div>
+            <div ng-if="vm.serviceDetail.slogan != '' && vm.serviceDetail.slogan != null"><label>广告位:</label> <span>{{vm.serviceDetail.slogan}}</span></div>
+        </div>
+    </div>
+
+    <div class="row pl20">
+
+        <button class="btn btn-info width80px"
+                ng-if="(vm.pluginId == vm.transferPluginId || vm.pluginId == vm.sitingPluginId) && (vm.serviceStatus != 3 && vm.status == 1)" ng-click="vm.refresh(vm.requirement[0].id)">刷新
+        </button>
+        <button class="btn btn-info width80px"
+                ng-if="(vm.pluginId == vm.reservationPluginId) && (vm.serviceStatus != 3 && vm.status == 1)" ng-click="vm.shopRefresh(vm.requirement[0].shopId)">刷新
+        </button>
+        <button class="btn btn-info width80px"
+                ng-if="(vm.pluginId == vm.transferPluginId || vm.pluginId == vm.sitingPluginId) && (vm.serviceStatus != 3 && vm.status == 1)"
+                ui-sref="index.main.recommendation({serviceId:vm.serviceDetail.id, params:vm.requirement[0].id, pluginId:vm.serviceDetail.pluginId})">推荐
+        </button>
+        <!--<button class="btn btn-info width80px"-->
+                <!--ng-if="(vm.pluginId == vm.reservationPluginId) && (vm.serviceStatus != 3 && vm.status == 1)"-->
+                <!--ui-sref="index.main.recommendation({params:vm.serviceDetail.shopId, pluginId:vm.serviceDetail.pluginId})">推荐-->
+        <!--</button>-->
+        <button class="btn btn-info width80px"
+                ng-if="(vm.pluginId == vm.transferPluginId || vm.pluginId == vm.sitingPluginId) && (vm.serviceStatus != 3 && vm.status == 1)"
+                ui-sref="index.main.requirementUpdate({requirementId:vm.requirement[0].id,shopId:vm.serviceDetail.shopId})">修改
+        </button>
+        <button class="btn btn-info width80px"
+                ng-if="vm.cssStatus == 0 && vm.status == 1"
+                ng-click="vm.abort()">放弃服务
+        </button>
+        <button class="btn btn-info width80px"
+                ng-if="vm.cssStatus == 1 && vm.status == 1"
+                ng-click="vm.cancelAbort()">取消放弃
+        </button>
+        <!--<button class="btn btn-info width80px"-->
+                <!--ng-if="vm.pluginId == vm.recruitmentPluginId" >备注案列-->
+        <!--</button>-->
+
+    </div>
+
+    <uib-tabset active="vm.activeTab" class="clearfix">
+        <uib-tab index="0" heading="详情" select="vm.clearCurrentPage()">
+            <ul>
+                <li class="col-md-10 col-sm-10"
+                    style="padding-top: 10px; padding-bottom: 10px; border: 0px 1px 1px 0px; border-color: #ddd; ">
+                    <div class="pl30" ng-switch on="vm.pluginId">
+
+                        <!--转店详情-->
+                        <!--<div ng-include src="'views/partial/serviceDetail/transferDetail.html'"></div>-->
+                        <div class="animate-switch row" ng-switch-when="xw:transfer">
+                            <div class="row">
+                                <div ng-if="!vm.requirement.length">
+                                    没有相关数据
+                                </div>
+                                <div ng-if="vm.requirement.length" >
+                                    <div ng-repeat="requirement in vm.requirement">
+                                        <div class="row">
+                                            <div class="col-md-5 col-sm-5">
+                                                <img  ng-if="!vm.photos.length" ng-src="{{vm.defaultPicUrl}}" width="100%" height="200">
+                                                <scroll-thumb ng-if="vm.photos.length" big-pics="vm.photos" small-pics="vm.photos"></scroll-thumb>
+                                            </div>
+                                            <div  class="col-md-7 col-sm-7">
+                                                <ul class="service-detail-list">
+                                                    <li>
+                                                        <span class="">标题: {{requirement.title}}</span>
+                                                    </li>
+                                                    <li>
+                                                        <span class="">联系人: {{requirement.contact}}</span>
+                                                    </li>
+                                                    <li>
+                                                        <span class="col-xs-6" style="padding-left: 0px;">类型:{{requirement.content.type | reqTypeFilter}}</span>
+                                                        <span class="col-xs-6" style="padding-left: 0px;">店名:{{requirement.content.shopName}}</span>
+                                                    </li>
+                                                    <li>
+                                                        <span class="col-xs-6" style="padding-left: 0px;">行业:{{requirement.content.industryId | industryName }}</span>
+                                                        <span class="col-xs-6" style="padding-left: 0px;">面积:{{requirement.content.area}}平米</span>
+                                                    </li>
+                                                    <li>
+                                                        <span class="col-xs-6" style="padding-left: 0px;">租金:{{requirement.content.rent/100}}元/月</span>
+                                                        <span class="col-xs-6" style="padding-left: 0px;">转让费:{{requirement.content.cost/1000000 | number:2}} 万元</span>
+                                                    </li>
+                                                    <li>
+                                                        <span class="">经营状态:{{requirement.content.businessStatus | reqBusinessStatus}}-{{requirement.content.emptyTransfer | emptyTransfer}}空转</span>
+                                                    </li>
+                                                    <li>
+                                                        <span class="">所在区域:{{requirement.content.districtId.toString().substr(0,4) | cityName}}<span class="" ng-if="requirement.content.districtId.toString().length > 6">{{requirement.content.districtId.toString().substr(0,6) | districtName}}</span>{{requirement.content.districtId | districtName}}</span>
+                                                    </li>
+                                                    <li>
+                                                        <span class="">地址:{{requirement.content.address}}</span>
+                                                    </li>
+                                                    <li>
+                                                        <span class="">适合经营:<span class="mr10" ng-repeat="suitableIndustryId in requirement.content.suitableIndustryIds">{{suitableIndustryId | industryName}}</span></span>
+                                                    </li>
+                                                    <li>
+                                                        <span class="">广告语:{{requirement.slogan}}</span>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </div>
+
+                                        <div class="mt20 row">
+                                            <h4>描述:</h4>
+                                            <hr>
+                                            <div class="col-xs-12">
+                                                {{requirement.description}}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!--找店详情-->
+                        <!--<div ng-include="'views/partial/serviceDetail/sitingDetail.html'"></div>-->
+                        <div class="animate-switch row" ng-switch-when="xw:siting">
+                            <div class="row">
+                                <div ng-if="!vm.requirement.length">
+                                    没有相关数据
+                                </div>
+                                <div ng-if="vm.requirement.length">
+                                    <div ng-repeat="requirement in vm.requirement">
+                                        <div class="row">
+                                            <ul class="service-detail-list">
+                                                <li>
+                                                    <span class="">标题: {{requirement.title}}</span>
+                                                </li>
+                                                <li>
+                                                    <span class="">行业:{{requirement.content.industryId | industryName }}</span>
+                                                </li>
+                                                <li>
+                                                    <span class="">期望面积:{{requirement.content.minArea}}-{{requirement.content.maxArea}}平米</span>
+                                                </li>
+                                                <li>
+                                                    <span class="">期望租金:{{requirement.content.minRent/100}}-{{requirement.content.maxRent/100}}元/月</span>
+                                                </li>
+                                                <li>
+                                                    <span class="">期望区域: <span class="mr10" ng-repeat="districtId in requirement.content.districtIds">{{districtId.toString().substr(0, 4) | cityName}}{{districtId.toString().substr(0, 6) | districtName}}<span ng-if="districtId.toString().length > 6">{{districtId | districtName}} </span></span></span>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                        <div class="mt20 row">
+                                            <h4>描述:</h4>
+                                            <hr>
+                                            <div class="col-xs-12">
+                                                {{requirement.description}}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!--消费详情-->
+                        <!--<div ng-include="'views/partial/serviceDetail/reservationDetail.html'"></div>-->
+                        <div class="animate-switch" ng-switch-when="xw:reservation">
+                            <div class="row">
+                                <div ng-if="vm.serviceDetail == null">
+                                    没有相关数据
+                                </div>
+                                <div ng-if="vm.serviceDetail != null">
+                                    <div class="col-md-7 col-sm-7">
+                                        <ul class="service-detail-list" >
+                                            <li>
+                                                <span class="">行业:{{vm.serviceDetail.shopIndustry | industryName }}</span>
+                                            </li>
+                                            <li>
+                                                <span class="">地址:{{vm.serviceDetail.shopAddress}}</span>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!--招聘详情-->
+                        <!--<div ng-include="'views/partial/serviceDetail/recruitmentDetail.html'"></div>-->
+                        <div class="animate-switch" ng-switch-when="xw:recruitment">
+                            <div class="row">
+                                <div ng-if="!vm.requirement.length">
+                                    没有相关数据
+                                </div>
+                                <div ng-if="vm.requirement.length">
+                                    <div ng-repeat="recruitment in vm.requirement">
+                                        <button ng-if="vm.serviceStatus != 3 && vm.status == 1" class="btn btn-info" ng-click="vm.refresh(recruitment.id)">刷新</button>
+                                        <!--<button ng-if="vm.serviceStatus != 3 && vm.status == 1" class="btn btn-info" ui-sref="index.main.recommendation({params:recruitment.id, pluginId:recruitment.pluginId})">推荐</button>-->
+                                        <button ng-if="vm.serviceStatus != 3 && vm.status == 1" class="btn btn-info" ui-sref="index.main.requirementUpdate({requirementId:recruitment.id,shopId:vm.serviceDetail.shopId})">修改</button>
+                                        <ul class="service-detail-list">
+                                            <li>
+                                                <span class="">标题:{{recruitment.title}}</span>
+                                            </li>
+                                            <li>
+                                                <span class="">招聘职位:{{recruitment.content.positionId | positionName}}</span>
+                                            </li>
+                                            <li>
+                                                <span class="">招聘人数:{{recruitment.content.recruitNumber}}人</span>
+                                            </li>
+                                            <li>
+                                                <span class="">地址:{{recruitment.content.shopAddress}}</span>
+                                            </li>
+                                            <li>
+                                                <span class="">描述:{{recruitment.description}}</span>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                            <hr>
+                        </div>
+
+                    </div>
+                </li>
+            </ul>
+        </uib-tab>
+        <uib-tab index="1" heading="服务备注" select="vm.clearCurrentPage()">
+            <div ng-include="'views/partial/serviceRemark.html'"></div>
+        </uib-tab>
+        <uib-tab index="2" heading="服务记录" select="vm.clearCurrentPage()">
+            <div ng-include="'views/partial/serviceHistory.html'"></div>
+        </uib-tab>
+    </uib-tabset>
+
+    <form name="outerForm" class="tab-form-demo">
+
+    </form>
+</div>

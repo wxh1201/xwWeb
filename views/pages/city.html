@@ -1,0 +1,33 @@
+<div id="change-city">
+    <div id="bdw" class="bdw">
+        <div id="bd" class="cf">
+            <div class="choosecities">
+                <div class="citieslist">
+                    <ol class="hasallcity">
+                        <li>
+                            <p class="cft text-warning">
+                                <span class=""><strong>热门城市</strong></span>
+                                <span>
+                                    <a ng-repeat="hotCity in vm.hotCities" class="isonline" href="javascript:void(0)" ng-click="vm.change(hotCity.id)">{{hotCity.name}}</a>
+                                </span>
+                            </p>
+                        </li>
+                    </ol>
+                    <h2>按拼音首字母选择<span class="arrow">&raquo;</span></h2>
+                    <ol class="hasallcity">
+                        <li ng-repeat="(firstCharacter, cityItems) in vm.cities">
+                            <p class="cf">
+                                <span class="label"><strong>{{firstCharacter | uppercase}}</strong></span>
+                                <span>
+                                    <a ng-repeat="city in cityItems" class="isonline" href="javascript:void(0)" ng-click="vm.change(city.id)">{{city.name}}</a>
+                                </span>
+                            </p>
+                        </li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+        <!-- bd end -->
+    </div>
+    <!-- bdw end -->
+</div>

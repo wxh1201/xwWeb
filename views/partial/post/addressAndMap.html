@@ -1,0 +1,71 @@
+<div class="form-group">
+    <div class="row">
+        <label class="col-sm-2 control-label"><span class="required">*</span>区域</label>
+        <div class="col-sm-2">
+            <select name="city" class="form-control" ng-model="vm.cityId" ng-required="!vm.businessAreasSelect || vm.businessAreasSelect.length == 0" ng-change="vm.loadDistricts(vm.cityId)"
+                ng-options="city.c as city.n for city in vm.cities">
+                <option value="">{{vm.cityId | cityName}}</option>
+            </select>
+        </div>
+        <div class="col-sm-2">
+            <select name="district" class="form-control" ng-model="vm.districtId" ng-required="!vm.businessAreasSelect || vm.businessAreasSelect.length == 0" ng-change="vm.loadBusinessAreas(vm.districtId)"
+                    ng-options="district.c as district.n for district in vm.districtsSelect">
+                <option value="">请选择</option>
+            </select>
+        </div>
+        <div class="col-sm-2" ng-if="vm.businessAreasSelect && vm.businessAreasSelect.length > 0">
+            <select name="businessArea" class="form-control" ng-model="vm.businessAreaId" required ng-change="vm.changeBusinessArea()"
+                    ng-options="businessArea.c as businessArea.n for businessArea in vm.businessAreasSelect">
+                <option value="">请选择</option>
+            </select>
+        </div>
+    </div>
+    <div ng-show="vm.recruitmentFormSubmitted || vm.submitted" class="row">
+        <div class="col-sm-2"></div>
+        <div class="col-sm-5"><span style="color:red" ng-show="recruitmentForm.district.$error.required">请选择区域</span></div>
+    </div>
+    <div ng-show="vm.recruitmentFormSubmitted || vm.submitted" class="row">
+        <div class="col-sm-2"></div>
+        <div class="col-sm-5"><span style="color:red" ng-show="recruitmentForm.address.$error.required || transferForm.address.$error.required || reservationForm.address.$error.required">请选择区域</span></div>
+    </div>
+</div>
+
+
+<div class="form-group">
+    <div class="row">
+        <label class="col-sm-2 control-label"><span class="required">*</span>地址</label>
+        <div class="col-sm-5 col-md-5">
+            <input name="address" type="text" class="form-control" placeholder="地址" ng-model="vm.address" required ng-maxlength="50">
+        </div>
+    </div>
+    <div ng-show="vm.recruitmentFormSubmitted || vm.submitted" class="row">
+        <div class="col-sm-2"></div>
+        <div class="col-sm-5">
+            <span style="color:red" ng-show="recruitmentForm.address.$error.required || transferForm.address.$error.required || reservationForm.address.$error.required">地址不能为空</span>
+            <span style="color:red" ng-show="recruitmentForm.address.$error.maxlength || transferForm.address.$error.maxlength || reservationForm.address.$error.required">地址长度不能超过50个字符</span>
+        </div>
+    </div>
+</div>
+
+<div class="form-group">
+    <div class="row">
+        <label class="col-sm-2 control-label"><span class="required">*</span>在地图上标注</label>
+        <div class="col-sm-5 ">
+            <input type="button" value="在地图上标注" ng-click="vm.showMap('recruitmentMapContainer')" class="btn btn-info btn-sm">&nbsp;
+            <input type="button" value="收起地图" ng-click="vm.hiddenMap()" class="btn btn-info btn-sm">&nbsp;
+            <br><br>
+            <!--百度地图-->
+            <div id='recruitmentMapContainer' style="width:700px;height:400px;" ng-show="vm.showMaped"></div>
+            <!--百度地图-->
+        </div>
+    </div>
+    <div ng-show="vm.recruitmentFormSubmitted || vm.submitted" class="row">
+        <div class="col-sm-2"></div>
+        <!--<div class="col-sm-5"><span style="color:red" ng-show="!vm.showMaped">请在地图上标注位置</span></div>-->
+        <div class="col-sm-5">
+            <span style="color:red" ng-show="!vm.marker">请在地图上标注位置</span>
+            <span style="color:green" ng-show="vm.marker">已标注</span>
+        </div>
+    </div>
+</div>
+

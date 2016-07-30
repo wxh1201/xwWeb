@@ -1,0 +1,34 @@
+<div class="det">
+    <div class="divline mb10"><li><h4 class="col-md-2 col-sm-2">最新案例</h4></li></div>
+    <div class="media borrad" ng-repeat="example in vm.list">
+        <!--图片-->
+        <div class="media-middle col-sm-2 ">
+            <a ui-sref="index.main.exampleDetail({serviceId:example.serviceId})">
+                <img ng-if="!example.photo" class="media-object" ng-src="{{vm.defaultPicUrl}}"/>
+                <img ng-if="example.photo" class="media-object" ng-src="{{example.photo}}"/>
+            </a>
+        </div>
+        <!--文字-->
+        <div class="media-body">
+            <!--顶部title-->
+            <h4 class="media-heading text-left lh65">
+                <a ui-sref="index.main.exampleDetail({serviceId:example.serviceId})">{{example.title}}</a>
+            </h4>
+
+        </div>
+    </div>
+
+    <div class="cle"></div>
+
+</div>
+
+<div class="row">
+    <div class="col-lg-5" style="line-height:34px;">
+        总数{{vm.totalCount}}条 共{{numPages}}页
+    </div>
+    <div class="col-lg-7">
+        <nav class="xw-pagination-container">
+            <uib-pagination previous-text="上一页" next-text="下一页" max-size="10" rotate="false" num-pages="numPages" total-items="vm.totalCount" items-per-page="vm.pageSize" ng-model="vm.currentPage" ng-change="vm.getList()"></uib-pagination>
+        </nav>
+    </div>
+</div>

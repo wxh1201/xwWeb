@@ -1,0 +1,20 @@
+<div class="container">
+    <form class="form-signin" novalidate>
+        <h1 class="form-signin-heading">铺铺旺</h1>
+        <h2 class="form-signin-heading">轻松赚 快乐活</h2>
+        <div style="color: red;" ng-show="vm.errorMessage">{{vm.errorMessage}}</div>
+        <input type="text" maxlength="11" class="input-block-level" placeholder="请输入手机号码" ng-model="vm.username">
+        <br>
+        <input type="password" maxlength="12" minlength="6" class="input-block-level" placeholder="请输入登录密码"
+               ng-model="vm.password">
+        <br>
+        <button class="btn btn-primary btn-lg" ng-click="vm.login()" type="submit">登录</button>
+        <hr>
+        <h4>如果你还没有注册<br>
+            请先下载铺铺旺APP进行注册</h4>
+        <img src="static/img/qr.png"/><br>
+        扫一扫下载铺铺旺APP
+    </form>
+</div>
+<p class="cpr"> 深圳总部电话：18902455801 | 0755-26637688 | 深圳总部地址：深圳市南山区登良路公园道大厦B栋1单元2101-2105<BR>
+    版权所有 © 铺铺旺电子商务有限公司 </p>

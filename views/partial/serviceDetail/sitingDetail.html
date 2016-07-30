@@ -1,0 +1,39 @@
+<div class="animate-switch row" ng-switch-when="xw:siting">
+    <div class="row">
+        <div ng-if="!vm.requirement.length">
+            没有相关数据
+        </div>
+        <div ng-if="vm.requirement.length">
+            <div ng-repeat="requirement in vm.requirement">
+                <div class="row">
+                    <ul class="service-detail-list ml30">
+                        <li>
+                            <span class="">标题:{{requirement.pluginId | pluginIdFilter}}: {{requirement.title}}</span>
+                        </li>
+                        <li>
+                            <span class="">行业:{{requirement.content.industryId | industryName }}</span>
+                        </li>
+                        <li>
+                            <span class="">期望面积:{{requirement.content.minArea}}-{{requirement.content.maxArea}}平米</span>
+                        </li>
+                        <li>
+                             <span class="">期望租金:{{requirement.content.minRent/100}}-{{requirement.content.maxRent/100}}元/月</span>
+                        </li>
+                        <li>
+                            <span class="">期望区域: <span class="mr10" ng-repeat="districtId in requirement.content.districtIds">{{districtId.toString().substr(0,4) | districtName}}{{districtId | districtName}}</span></span>
+                        </li>
+                    </ul>
+                </div>
+                <div class="mt20 row">
+                    <h4>描述:</h4>
+                    <hr>
+                    <div>
+                        {{requirement.description}}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+</div>

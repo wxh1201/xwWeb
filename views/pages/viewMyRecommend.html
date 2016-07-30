@@ -1,0 +1,177 @@
+
+<section class="">
+    <ol class="breadcrumb ">
+        <li>查看推荐</li>
+    </ol>
+</section>
+
+<div class="">
+    <div>
+        <table class="table table-bordered">
+            <thead>
+            <tr>
+                <th>推荐的信息</th>
+                <th>联系方式</th>
+                <th>推荐者</th>
+                <th>推荐时间</th>
+                <th>操作</th>
+            </tr>
+            </thead>
+            <tbody ng-repeat="myRecommend in vm.myRecommendList track by $index">
+                <tr>
+                    <td class="position-rel">
+                        <div class="inlineBlock">
+                            <span class="plugin-flag" ng-if="myRecommend.direction == 1">转店</span>
+                            <span class="plugin-flag" ng-if="myRecommend.direction == 2">找店</span>
+                        </div>
+                        <div class="inlineBlock" >
+                            <div>{{myRecommend.title}} </div>
+                            <div>
+                                <div>{{myRecommend.industryId.toString().substr(0,2) | industryName }}-{{myRecommend.industryId | industryName}}</div>
+                                <div ng-if="myRecommend.direction == 1">{{myRecommend.area}}平米</div>
+                                <div ng-if="myRecommend.direction == 2">{{myRecommend.minArea}}-{{myRecommend.maxArea}}平米</div>
+                            </div>
+                        </div>
+
+                    </td>
+                    <td>
+                        <div>姓名:<span>{{myRecommend.resourceName}}</span></div>
+                        <div>电话:<span>{{myRecommend.resourceMobile}}</span></div>
+                    </td>
+                    <td>
+                        <div>姓名:<span>{{myRecommend.middlemanName}}</span></div>
+                    </td>
+                    <td>
+                        <div>{{myRecommend.recommendTime | date: 'yyyy-MM-dd HH:mm:ss'}}</div>
+                    </td>
+                    <td>
+                        <button class="btn btn-info" ng-click="vm.getRecommendInfo(myRecommend.id)">查看详情</button>
+                    </td>
+                </tr>
+                <tr class="check-recommend-detail" ng-show="myRecommend.expand == true">
+                    <td colspan="5">
+                        <!--转店-->
+                        <div class="f-l" style="width: 35%" ng-if="myRecommend.direction == 1">
+                            <div class="normal-line">
+                                <div class="f-l">
+                                    <span>客户电话:</span>
+                                    <span>{{myRecommend.info.resourceInfo.mobile}}</span>
+                                </div>
+                                <div class="f-r">
+                                    <span>推荐人员:</span>
+                                    <span>{{myRecommend.info.middleman.userName}}</span>
+                                </div>
+                            </div>
+                            <div class="normal-line">
+                                <span>交易类型:</span>
+                                <span>{{myRecommend.info.resourceInfo.content.type | transferType}}</span>
+                            </div>
+                            <div class="normal-line">
+                                <span>行业业态:</span>
+                                <span>{{myRecommend.info.resourceInfo.content.industryId.toString().substr(0, 2) | industryName}}-{{myRecommend.info.resourceInfo.content.industryId | industryName}}</span>
+                            </div>
+                            <div class="normal-line" ng-if="myRecommend.info.resourceInfo.content.area">
+                                <span>面积:</span>
+                                <span>{{myRecommend.info.resourceInfo.content.area}}平米</span>
+                            </div>
+                            <div class="normal-line" ng-if="myRecommend.info.resourceInfo.content.rent">
+                                <span>租金:</span>
+                                <span>{{myRecommend.info.resourceInfo.content.rent/100}}元/月</span>
+                            </div>
+                            <div class="normal-line" ng-if="myRecommend.info.resourceInfo.content.transferFee">
+                                <span>转让费:</span>
+                                <span>{{myRecommend.info.resourceInfo.content.transferFee/1000000}}万元</span>
+                            </div>
+                            <div class="normal-line" ng-if="myRecommend.info.resourceInfo.content.businessStatus > 0">
+                                <span>经营状态:</span>
+                                <span ng-if="myRecommend.info.resourceInfo.content.businessStatus == 1">营业中</span>
+                                <span ng-if="myRecommend.info.resourceInfo.content.businessStatus == 2">未营业</span>
+                            </div>
+                            <div class="normal-line">
+                                <span>地址:</span>
+                                <span >{{myRecommend.info.resourceInfo.content.address}}</span>
+                            </div>
+                            <div class="normal-line">
+                                <span>发布时间:</span>
+                                <span >{{myRecommend.info.resourceInfo.createTime | date: 'yyyy-MM-dd HH:mm:ss'}}</span>
+                            </div>
+                            <div class="normal-line">
+                                <span>详细描述:</span>
+                                <span >{{myRecommend.info.resourceInfo.description}}</span>
+                            </div>
+                        </div>
+                        <!--找店-->
+                        <div class="f-l" style="width: 35%" ng-if="myRecommend.direction == 2">
+                            <div class="normal-line">
+                                <div class="f-l">
+                                    <span>客户电话:</span>
+                                    <span>{{myRecommend.info.resourceInfo.mobile}}</span>
+                                </div>
+                            </div>
+                            <div class="normal-line">
+                                <span>求组行业:</span>
+                                <span>{{myRecommend.info.resourceInfo.content.industryId.toString().substr(0, 2) | industryName}}-{{myRecommend.info.resourceInfo.content.industryId | industryName}}</span>
+                            </div>
+                            <div class="normal-line">
+                                <span>期望面积:</span>
+                                <span>{{myRecommend.info.resourceInfo.content.minArea}}平米</span>-<span>{{myRecommend.info.resourceInfo.content.maxArea}}平米</span>
+                            </div>
+                            <div class="normal-line">
+                                <span>期望租金:</span>
+                                <span>{{myRecommend.info.resourceInfo.content.minRent/100}}元/月</span>-<span>{{myRecommend.info.resourceInfo.content.maxRent/100}}元/月</span>
+                            </div>
+
+                            <div class="normal-line">
+                                <span>优先区域:</span>
+                                <span  ng-repeat="districtId in myRecommend.info.resourceInfo.content.districtIds">{{districtId | districtName}} </span>
+                            </div>
+                            <div class="normal-line">
+                                <span>发布时间:</span>
+                                <span >{{myRecommend.info.resourceInfo.createTime | date: 'yyyy-MM-dd HH:mm:ss'}}</span>
+                            </div>
+                            <div class="normal-line">
+                                <span>详细描述:</span>
+                                <span >{{myRecommend.info.resourceInfo.description}}</span>
+                            </div>
+                        </div>
+
+                        <div  class="f-r text-center position-rel" style="width: 30%">
+                            <div ng-show="vm.check">
+                                <div class="mb10">
+                                    <button class="btn"  ng-click="vm.checkRecommend(myRecommend.id, 2, '推给商户')">推给商户</button>
+                                </div>
+                                <div class="mb10">
+                                    <button class="btn" ng-click="vm.checkRecommend(myRecommend.id, 0, '信息有误')">信息有误</button>
+                                </div>
+                                <div class="mb10">
+                                    <button class="btn" ng-click="vm.checkRecommend(myRecommend.id, 1, '不合适')">不合适</button>
+                                </div>
+                            </div>
+                            <span class="glyphicon glyphicon-remove-circle close-icon" ng-click="vm.closeDetail(myRecommend.id)"></span>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+            <tbody>
+                <tr ng-if="vm.myRecommendList.length == 0 && vm.complete == true">
+                    <td colspan="5">该服务无推荐</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <!--分页-->
+    <div class="row">
+        <div class="col-lg-4 " style="line-height:34px;margin: 20px 0;">
+            总数{{vm.totalCount}}条 共{{numPages}}页
+        </div>
+        <div class="col-lg-2" style="line-height:34px;text-align: right;margin: 20px 0;">
+            <span >每页{{vm.pageSize}}条</span>
+        </div>
+        <div class="col-lg-6 col-sm-6 col-md-7">
+            <nav class="xw-pagination-container">
+                <uib-pagination previous-text="上一页" next-text="下一页" max-size="10" rotate="false" num-pages="numPages" total-items="vm.totalCount" items-per-page="vm.pageSize" ng-model="vm.currentPage" ng-change="vm.pageGetMyRecommendList()"></uib-pagination>
+            </nav>
+        </div>
+    </div>
+</div>

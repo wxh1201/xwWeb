@@ -1,0 +1,21 @@
+<div class="scrollThumbContainer">
+  <div class="focuspic">
+
+    <div class="indexbanner" ng-repeat="bigPic in bigPics"><a href="javascript:void(0)"><img ng-src="{{bigPic}}"></a></div>
+
+  </div>
+
+  <div class="scrollbox">
+    <div ng-if="hasPrev()" class="f-l scrollbtn prev" ng-click="prev()"></div>
+    <div ng-if="!hasPrev()" class="f-l scrollbtn prev disabled"></div>
+    <div class="f-l scrollpic">
+      <ul>
+        <li ng-class="{current: $first}" ng-repeat="smallPic in smallPics" ng-click="focus($index)" id="{{$index}}"><a href="javascript:void(0)"><img ng-src="{{smallPic}}"></a></li>
+      </ul>
+    </div>
+    <div ng-if="hasNext(smallPics.length)" class="f-r scrollbtn next" ng-click="next()"></div>
+    <div ng-if="!hasNext(smallPics.length)" class="f-r scrollbtn next disabled"></div>
+  </div>
+
+</div>
+

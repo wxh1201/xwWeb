@@ -1,0 +1,208 @@
+<div class="recruitment" ng-show="vm.pluginId == vm.recruitmentPluginId">
+    <h4 class="lh65 05em">招聘信息内容</h4>
+
+    <form class="form-horizontal" name="recruitmentForm" novalidate>
+
+        <div class="form-group">
+            <div class="row">
+                <label class="col-sm-2 control-label"><span class="required">*</span>店名</label>
+                <div class="col-sm-5">
+                    <input type="text" class="form-control" name="shopName" placeholder="店名" ng-model="vm.shopName" required minlength="1" maxlength="20">
+                </div>
+            </div>
+            <div ng-show="vm.recruitmentFormSubmitted" class="row">
+                <div class="col-sm-2"></div>
+                <div class="col-sm-3"><span style="color:red" ng-show="recruitmentForm.shopName.$error.required">店名不能为空</span></div>
+                <div class="col-sm-3"><span style="color:red" ng-show="recruitmentForm.shopName.$error.maxlength">店名长度不能大于20位</span></div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="row">
+                <label class="col-sm-2 control-label"><span class="required">*</span>行业</label>
+                <div class="col-sm-2">
+                    <select name="industry" class="form-control" ng-model="vm.industryId" ng-change="vm.loadSmallIndustries(vm.industryId);"
+                            ng-options="industry.c as industry.n for industry in vm.industriesSelect">
+                        <option value="">请选择</option>
+                    </select>
+                </div>
+                <div class="col-sm-2">
+                    <select name="smallIndustry" class="form-control" ng-model="vm.smallIndustryId" required
+                            ng-options="smallIndustry.c as smallIndustry.n for smallIndustry in vm.smallIndustriesSelect">
+                        <option value="">请选择</option>
+                    </select>
+                </div>
+            </div>
+            <div ng-show="vm.recruitmentFormSubmitted" class="row">
+                <div class="col-sm-2"></div>
+                <div class="col-sm-5"><span style="color:red" ng-show="recruitmentForm.smallIndustry.$error.required">请选择行业</span></div>
+            </div>
+        </div>
+
+        <!--<div ng-include="'views/partial/post/addressAndMap.html'"></div>-->
+        <div class="form-group">
+            <div class="row">
+                <label class="col-sm-2 control-label"><span class="required">*</span>区域</label>
+                <div class="col-sm-2">
+                    <select name="city" class="form-control" ng-model="vm.cityId" ng-change="vm.loadDistricts(vm.cityId)"
+                            ng-options="city.c as city.n for city in vm.cities">
+                        <option value="">{{vm.cityId | cityName}}</option>
+                    </select>
+                </div>
+                <div class="col-sm-2">
+                    <select name="district" class="form-control" ng-model="vm.districtId" ng-required="!vm.businessAreasSelect || vm.businessAreasSelect.length == 0" ng-change="vm.loadBusinessAreas(vm.districtId)"
+                            ng-options="district.c as district.n for district in vm.districtsSelect">
+                        <option value="">请选择</option>
+                    </select>
+                </div>
+                <div class="col-sm-2" ng-if="vm.businessAreasSelect && vm.businessAreasSelect.length > 0">
+                    <select name="businessArea" class="form-control" ng-model="vm.businessAreaId"
+                            required ng-change="vm.changeBusinessArea()"
+                            ng-options="businessArea.c as businessArea.n for businessArea in vm.businessAreasSelect">
+                        <option value="">请选择</option>
+                    </select>
+                </div>
+            </div>
+            <div ng-show="vm.recruitmentFormSubmitted || vm.submitted" class="row">
+                <div class="col-sm-2"></div>
+                <div class="col-sm-5">
+                    <span style="color:red" ng-show="recruitmentForm.district.$error.required">请选择区域</span>
+                    <span style="color:red" ng-show="recruitmentForm.businessArea.$error.required">请选择区域</span>
+                </div>
+                <div class="col-sm-5">
+
+                </div>
+            </div>
+        </div>
+
+
+        <div class="form-group">
+            <div class="row">
+                <label class="col-sm-2 control-label"><span class="required">*</span>地址</label>
+                <div class="col-sm-5 col-md-5">
+                    <input name="address" type="text" class="form-control" placeholder="地址" ng-model="vm.address" required ng-maxlength="50">
+                </div>
+            </div>
+            <div ng-show="vm.recruitmentFormSubmitted || vm.submitted" class="row">
+                <div class="col-sm-2"></div>
+                <div class="col-sm-5">
+                    <span style="color:red" ng-show="recruitmentForm.address.$error.required">地址不能为空</span>
+                    <span style="color:red" ng-show="recruitmentForm.address.$error.maxlength">地址长度不能超过50个字符</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="row">
+                <label class="col-sm-2 control-label"><span class="required">*</span>在地图上标注</label>
+                <div class="col-sm-5 ">
+                    <input type="button" value="在地图上标注" ng-click="vm.showMap('recruitmentMapContainer')" class="btn btn-info btn-sm">&nbsp;
+                    <input type="button" value="收起地图" ng-click="vm.hiddenMap()" class="btn btn-info btn-sm">&nbsp;
+                    <br><br>
+                    <!--百度地图-->
+                    <div id='recruitmentMapContainer' style="width:700px;height:400px;" ng-show="vm.showMaped"></div>
+                    <!--百度地图-->
+                </div>
+            </div>
+            <div ng-show="vm.recruitmentFormSubmitted || vm.submitted" class="row">
+                <div class="col-sm-2"></div>
+                <div class="col-sm-5">
+                    <span style="color:red" ng-show="!vm.markered">请在地图上标注位置</span>
+                    <span style="color:green" ng-show="vm.markered">已标注</span>
+                </div>
+            </div>
+        </div>
+
+
+
+        <div class="form-group">
+            <div class="row">
+                <label  class="col-sm-2 control-label"><span class="required">*</span>职位</label>
+                <div class="col-sm-2">
+                    <select name="industry" class="form-control" ng-model="vm.positionIndustryId" ng-change="vm.loadPositions(vm.positionIndustryId)"
+                            ng-options="industry.c as industry.n for industry in vm.industriesSelect">
+                        <option value="">请选择</option>
+                    </select>
+                </div>
+                <div class="col-sm-2">
+                    <select name="position" class="form-control" ng-model="vm.positionId"
+                            ng-options="position.c as position.n for position in vm.positionsSelect">
+                        <option value="">请选择</option>
+                    </select>
+                </div>
+                <div class="col-sm-3">
+                    <button class="btn btn-primary" ng-disabled="vm.positionIds.length == 10" ng-click="vm.addPosition('recruitmentPositionContainer')"> +添加</button>（最多10项）
+                </div>
+            </div>
+            <div ng-show="vm.recruitmentFormSubmitted" class="row">
+                <div class="col-sm-2"></div>
+                <div class="col-sm-10"><span style="color:red" ng-show="vm.positionIds.length == 0">请添加职位</span></div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-sm-offset-2 col-sm-10 col-md-10" id="recruitmentPositionContainer">
+
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="row">
+                <label class="col-sm-2 control-label"><span class="required">*</span>招聘人数</label>
+                <div class="col-sm-5">
+                    <input type="number" class="form-control" name="recruitNumber" placeholder="人数" ng-model="vm.recruitNumber" required min="1" max="9999" ng-pattern="/^([0-9]+)$/">
+                </div>
+            </div>
+            <div ng-show="vm.recruitmentFormSubmitted" class="row">
+                <div class="col-sm-2"></div>
+                <div class="col-sm-3">
+                    <span style="color:red" ng-show="recruitmentForm.recruitNumber.$error.required">人数不能小于1人</span>
+                    <span style="color:red" ng-show="recruitmentForm.recruitNumber.$error.min">人数不能小于1人</span>
+                    <span style="color:red" ng-show="recruitmentForm.recruitNumber.$error.max">人数不能大于9999人</span>
+                    <span style="color:red" ng-show="recruitmentForm.recruitNumber.$error.number">人数不能必须是数字</span>
+                    <span style="color:red" ng-show="recruitmentForm.recruitNumber.$error.pattern">人数不能有小数</span>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="row">
+                <label class="col-sm-2 control-label"><span class="required">*</span>描述</label>
+                <div class="col-sm-7">
+                    <textarea name="remark" class="form-control" rows="3" ng-model="vm.remark" maxlength="300" minlength="10" required placeholder="请输入描述，字数10-300"></textarea>
+                </div>
+            </div>
+            <div ng-show="vm.recruitmentFormSubmitted" class="row">
+                <div class="col-sm-2"></div>
+                <div class="col-sm-10">
+                    <span style="color:red" ng-show="recruitmentForm.remark.$error.maxlength">描述不能超过300个字符</span>
+                    <span style="color:red" ng-show="recruitmentForm.remark.$error.minlength">描述不能少于10个字符</span>
+                    <span style="color:red" ng-show="recruitmentForm.remark.$error.required">描述不能为空</span>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="row">
+                <label class="col-sm-2 control-label">添加照片</label>
+                <div class="col-sm-10">
+                    <div id="recruitmentThumbContainer">
+
+                    </div>
+
+                    <button ng-disabled="vm.photos.length == 8" class="add" type="file" ngf-select="vm.uploadFile($file, $invalidFiles, 'recruitmentThumbContainer')"
+                            accept="image/*" ngf-max-size="2097152">
+                        <span class="glyphicon glyphicon-picture" aria-hidden="true"></span>
+                        <span class="glyphicon-class">添加图片</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="row">
+                <div class="col-sm-offset-2 col-sm-10">
+                    <a type="submit" class="btn btn-lg btn-info" href="javascript:void(0)" ng-click="vm.recruitmentPost(recruitmentForm.$valid)"><span ng-if="!vm.isRevamp">发布信息</span><span ng-if="vm.isRevamp">提交</span></a>
+                    <a type="submit" ng-if="!vm.isRevamp" class="btn btn-primary btn-lg" href="javascript:void(0)" ng-click="vm.recruitmentPostAndTake(recruitmentForm.$valid)">发布并领取业务</a>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>

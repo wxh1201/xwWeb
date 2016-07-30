@@ -1,0 +1,50 @@
+<header class="main txtwhite">
+    <div class="head-container has-feedback">
+
+        <div class="col-sm-3 col-md-3 col-xs-3">
+            <div class="logo" title="我的业务">
+                <h1 style="position: absolute; right: 0px; top: 8px; cursor:pointer" ui-sref="index.main.business"
+                    ui-sref-opts="{reload: true}">铺铺旺</h1>
+            </div>
+            <a class="city" ui-sref="index.main.city">
+                <span class="curcity"> {{main.cityId | cityName}}</span><span
+                class="glyphicon glyphicon-map-marker"></span>
+            </a>
+        </div>
+        <div class="col-sm-7 col-md-7 col-xs-6" style="line-height: 50px">
+            <div class="clearfix">
+                <span class="ml15">转店限额：{{main.transferGet}}/{{main.transferTotal}}</span>
+                <span class="ml15">找店限额：{{main.sitingGet}}/{{main.sitingTotal}}</span>
+                <span class="ml15">招聘限额：{{main.recruitmentGet}}/{{main.recruitmentTotal}}</span>
+                <span class="ml15">消费限额：{{main.reservationGet}}/{{main.reservationTotal}}</span>
+            </div>
+        </div>
+
+        <div class="col-sm-2 col-md-2 col-xs-3 pull-right text-right hidnam"><!--img src="../../static/css/head.png" -->
+            欢迎您，<span>{{main.nickname}}！</span><a ui-sref="index.logout" class="gotologin"> 退出</a>
+        </div>
+
+
+    </div>
+</header>
+
+<div class="main-container" ng-controller="siderbarController">
+    <div ng-hide="siderbar " class="animate-hide sidebar">
+        <div ng-include="'views/partial/siderbar.html'"></div>
+    </div>
+    <div ui-view class="main-view" ></div>
+
+    <hr>
+    <p class="cpr"> 深圳总部电话：18902455801 | 0755-26637688 | 深圳总部地址：深圳市南山区登良路公园道大厦B栋1单元2101-2105<BR>
+        版权所有 © 铺铺旺电子商务有限公司 </p>
+
+    <div class="btn btn-info toggle-siderbar">
+        <input class="siderbar-checked" type="checkbox" ng-model="siderbar" checked="checked">
+        <span class="glyphicon glyphicon-option-horizontal"></span>
+    </div>
+
+</div>
+
+<div ng-if="prompt == true" >
+    <prompt text="{{promptText}}"></prompt>
+</div>

@@ -1,0 +1,64 @@
+<business-detail detail="vm.detail" page="vm.pageName"></business-detail>
+
+<div class="det">
+    <div class="divline mb10">
+        <li>
+            <h4 class="col-md-2 col-sm-2">业务备注</h4>
+        </li>
+    </div>
+    <div class="divline xwrelative">
+        <div class="modal-toast modal-toast-active" ng-class="vm.xwHidden" style="top:20px;">提交成功</div>
+            <li>
+                    <textarea class="form-control mb10 opportunity-detail" rows="3" ng-model="vm.remarkContent"
+                              placeholder="限300字"></textarea>
+            </li>
+            <li>
+                <input type="button" class="btn btn-info pull-left" value="提交备注"
+                       ng-click="vm.addRemark()">
+                <div ng-if="vm.void" class="font-red ml15 inlineBlock">{{vm.remarkWarnMsg}}</div>
+            </li>
+    </div>
+
+    <hr>
+    <div class="divline">
+        <li>
+            <h4 class="col-md-2 col-sm-2">最新备注：</h4>
+        </li>
+    </div>
+
+
+    <div class="media borrad" ng-repeat="remark in vm.list">
+        <!--文字-->
+        <div class="divline">
+
+            <div class="media-middle col-sm-1 defhum">
+            </div>
+
+            <div class="media-middle divline col-sm-11">
+                <li class="text-left">
+                    <span class="h4">{{remark.nickname}}</span> <span class="text-danger">{{remark.createTime | date: 'yyyy-MM-dd HH:mm'}}</span>
+                </li>
+                <li class="text-left">
+                    {{remark.content}}
+                </li>
+            </div>
+        </div>
+    </div>
+
+    <div class="cle"></div>
+
+</div>
+
+
+<div class="row">
+    <div class="col-lg-5" style="line-height:34px;">
+        总数{{vm.totalCount}}条 共{{numPages}}页
+    </div>
+    <div class="col-lg-7">
+        <nav class="xw-pagination-container">
+            <uib-pagination previous-text="上一页" next-text="下一页" max-size="10" rotate="false" num-pages="numPages"
+                            total-items="vm.totalCount" items-per-page="vm.pageSize" ng-model="vm.currentPage"
+                            ng-change="vm.getRemarkList()"></uib-pagination>
+        </nav>
+    </div>
+</div>

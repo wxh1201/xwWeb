@@ -1,0 +1,388 @@
+<section class="">
+    <ol class="breadcrumb ">
+        <li><a ui-sref="index.main.business">我的业务</a></li>
+        <li ng-if="!vm.isRevamp">发布信息</li>
+        <li ng-if="vm.isRevamp">完善信息</li>
+    </ol>
+</section>
+
+<div class="" ng-show="vm.currentStep == 1 && !vm.isRevamp">
+    <h4 class="lh65 05em">发布信息--选择类型</h4>
+    <div class="clearfix">
+        <ul>
+            <li class="col-md-3 col-sm-3 text-warning ">1.选择类型</li>
+            <li class="col-md-3 col-sm-3 text-danger">2.填写联系人</li>
+            <li class="col-md-3 col-sm-3 text-danger">3.填写信息内容</li>
+            <li class="col-md-3 col-sm-3 text-danger">4.完成发布</li>
+        </ul>
+    </div>
+    <div class="progress">
+        <div class="progress-bar" role="progressbar" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"
+             style="width: 25%;">
+            25 %
+        </div>
+    </div>
+
+    <h4 class="lh65 05em">选择信息类型</h4>
+    <div class="bismet " style="margin-top: 95px; margin-bottom: 133px; overflow: hidden;">
+        <ul>
+            <li class="col-md-3 col-sm-3 "><a class="btn btn-info btn-lg" href="javascript:void(0)"
+                                              ng-click="vm.select(vm.transferPluginId)">转店信息</a></li>
+            <li class="col-md-3 col-sm-3 "><a class="btn btn-info btn-lg" href="javascript:void(0)"
+                                              ng-click="vm.select(vm.sitingPluginId)">找店信息</a></li>
+            <li class="col-md-3 col-sm-3 "><a class="btn btn-info btn-lg" href="javascript:void(0)"
+                                              ng-click="vm.select(vm.recruitmentPluginId)">招聘信息</a></li>
+            <li class="col-md-3 col-sm-3 "><a class="btn btn-info btn-lg" href="javascript:void(0)"
+                                              ng-click="vm.select(vm.reservationPluginId)">消费信息</a></li>
+        </ul>
+    </div>
+    <div class="cle"></div>
+</div>
+
+<div class="container f-l" ng-show="vm.currentStep == 2 && !vm.isRevamp">
+    <h4 class="lh65 05em">发布信息</h4>
+    <div class="">
+        <div class="clearfix">
+            <ul>
+                <li class="col-md-3 col-sm-3 ">1.选择类型 <a href="javascript:void(0)" ng-click="vm.goToStep(1)">重选类型</a>
+                </li>
+                <li class="col-md-3 col-sm-3 text-warning ">2.填写联系人</li>
+                <li class="col-md-3 col-sm-3 text-danger">3.填写信息内容</li>
+                <li class="col-md-3 col-sm-3 text-danger">4.完成发布</li>
+            </ul>
+        </div>
+        <div class="progress">
+            <div class="progress-bar" role="progressbar" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"
+                 style="width: 50%;">
+                50 %
+            </div>
+        </div>
+    </div>
+
+    <h4 class="lh65 05em">商户联系方式</h4>
+    <form name="lockForm" class="bs-docs-example form-horizontal col-md-5 col-sm-5 settop post-form" novalidate>
+        <div class="input-group input-group-lg ">
+            <span class="input-group-addon glyphicon glyphicon-earphone"></span>
+            <input name="mobile" type="text" class="form-control" maxlength="11" placeholder="电话"
+                   ng-model="vm.mobile" required mobile aria-describedby="basic-addon1"
+                   ng-change="vm.clearExitOpportunityId()">
+        </div>
+        <div ng-show="lockForm.mobile.$touched">
+            <span style="color:red" ng-show="lockForm.mobile.$error.mobile">手机号不正确</span>
+            <span style="color:red" ng-show="lockForm.mobile.$error.required">手机号不能为空</span>
+            <span style="color:red" ng-show="vm.lock == true">该商机已被锁定，请稍后再试！</span>
+            <span style="color:red" ng-show="vm.exitOpportunityId != ''">
+                亲，该商机已存在了。<a ui-sref="index.main.opportunityDetail({oppId:vm.exitOpportunityId})">查看该商机</a>
+            </span>
+        </div>
+
+        <div ng-hide="lockForm.mobile.$touched">
+
+        </div>
+
+        <div class="input-group input-group-lg">
+            <span class="input-group-addon glyphicon glyphicon-user" id="basic-addon1"></span>
+            <input name="contact" type="text" class="form-control" maxlength="12" placeholder="姓名" ng-model="vm.contact"
+                   ng-minlength="2" ng-maxlength="20" required aria-describedby="basic-addon1">
+        </div>
+        <div ng-show="lockForm.contact.$touched">
+            <span style="color:red" ng-show="lockForm.contact.$error.required">姓名不能为空</span>
+            <span style="color:red" ng-show="lockForm.contact.$error.minlength">姓名最少2个字符</span>
+            <span style="color:red" ng-show="lockForm.contact.$error.maxlength">姓名最长20个字符</span>
+        </div>
+        <div class="form-group top60 cle">
+            <div class="col-sm-offset-4 col-sm-10">
+                <input class="btn btn-primary btn-lg" value="下一步" ng-disabled="lockForm.$invalid" ng-click="vm.lock()"
+                       type="submit"/>
+            </div>
+        </div>
+    </form>
+    <div class="cle"></div>
+</div>
+
+<div class="container f-l" ng-show="vm.currentStep == 3 || vm.isRevamp">
+    <h4 class="lh65 05em" ng-if="!vm.isRevamp">发布信息</h4><h4 class="lh65 05em" ng-if="vm.isRevamp">完善信息</h4>
+
+    <div class="" ng-if="!vm.isRevamp">
+        <div class="clearfix">
+            <ul>
+                <li class="col-md-3 col-sm-3">1.选择类型</li>
+                <li class="col-md-3 col-sm-3 ">2.填写联系人</li>
+                <li class="col-md-3 col-sm-3 text-warning  ">3.填写信息内容</li>
+                <li class="col-md-3 col-sm-3 text-danger">4.完成发布</li>
+            </ul>
+        </div>
+        <div class="progress">
+            <div class="progress-bar" role="progressbar" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100"
+                 style="width: 75%;">
+                75 %
+            </div>
+        </div>
+    </div>
+
+    <!--发布转店-->
+    <div ng-include="'views/partial/post/postTransfer.html'"></div>
+    <!--发布转店-->
+    <div ng-include="'views/partial/post/postSiting.html'"></div>
+    <!--发布招聘-->
+    <div ng-include="'views/partial/post/postRecruitment.html'"></div>
+    <!--发布消费-->
+    <div ng-include="'views/partial/post/postReservation.html'"></div>
+
+    <div class="cle"></div>
+</div>
+
+<div class="container f-l" ng-show="vm.currentStep == 4 && !vm.isRevamp">
+
+    <h4 class="lh65 05em">发布信息</h4>
+
+    <div class="">
+        <div class="clearfix">
+            <ul>
+                <li class="col-md-3 col-sm-3">1.选择类型</li>
+                <li class="col-md-3 col-sm-3 ">2.填写联系人</li>
+                <li class="col-md-3 col-sm-3">3.填写信息内容</li>
+                <li class="col-md-3 col-sm-3 text-danger  ">4.完成发布</li>
+            </ul>
+        </div>
+        <div class="progress">
+            <div class="progress-bar" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"
+                 style="width: 100%;">
+                100 %
+            </div>
+        </div>
+    </div>
+
+    <form class="form-horizontal mb10" novalidate>
+        <div class="form-group">
+            <label class="col-sm-2 control-label"></label>
+            <div class="col-sm-10 font-red">
+                <h2>恭喜你，信息发布完成</h2>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-2 control-label">你可以：</label>
+            <div class="col-sm-10">
+                <a type="button" class="btn btn-primary btn-lg" ui-sref="index.main.business"
+                   ui-sref-opts="{reload: true}">前往我的业务</a>
+                <a type="button" class="btn btn-primary btn-lg" ui-sref="index.main.businessHall({pluginId:'transfer'})"
+                   ui-sref-opts="{reload: true}">前往业务大厅</a>
+                <a type="button" class="btn btn-primary btn-lg"
+                   ui-sref="index.main.opportunityDetail({oppId:vm.opportunityId})"
+                   ui-sref-opts="{reload: true}">查看该商机</a>
+            </div>
+        </div>
+    </form>
+    <br><br>
+    <h4 class="lh65 05em">备注：</h4>
+
+    <form name="remarkFrom" novalidate>
+        <div class="divline xwrelative">
+            <div class="modal-toast modal-toast-active" ng-class="vm.xwHidden" style="top:20px;">提交成功</div>
+            <li>
+                            <textarea class="form-control mb10 opportunity-detail" name="remarkContent" required
+                                      ng-maxlength="300" rows="3" ng-model="vm.remarkContent"
+                                      placeholder="限300字"></textarea>
+            </li>
+            <li>
+                <input type="submit" class="btn btn-info pull-left" value="提交备注"
+                       ng-click="vm.addRemark(remarkFrom.$valid)">
+                <div ng-show="vm.remarkSubmitted" class="font-red ml15 inlineBlock">
+                    <span style="color:red" ng-show="remarkFrom.remarkContent.$error.required">备注不能为空</span>
+                    <span style="color:red" ng-show="remarkFrom.remarkContent.$error.maxlength">备注长度不能超过300个字符</span>
+                </div>
+            </li>
+        </div>
+    </form>
+
+    <!--<div ng-show="vm.pluginId == vm.transferPluginId">
+        <h4 class="lh65 05em">转店信息内容</h4>
+
+        <form class="form-horizontal" novalidate>
+
+            <div class="form-group">
+                <label class="col-sm-2 control-label">你可以：</label>
+                <div class="col-sm-10">
+                    <a type="button" class="btn btn-lg btn-info" ui-sref="index.main.post" ui-sref-opts="{reload: true}">继续发布信息</a>
+                    <a type="button" class="btn btn-primary btn-lg" ui-sref="index.main.business" ui-sref-opts="{reload: true}">返回我的业务</a>
+                </div>
+            </div>
+
+            <dl class="dl-horizontal xw-dl-horizontal">
+                <dt >手机：</dt>
+                <dd>{{vm.mobile}}</dd>
+
+                <dt>联系人：</dt>
+                <dd>{{vm.contact}}</dd>
+
+                <dt>类型：</dt>
+                <dd>{{vm.transferType | transferType}}</dd>
+
+                <dt ng-if="vm.transferType == vm.shopTransferType">店名：</dt>
+                <dt ng-if="vm.transferType == vm.attractInvestmentType">楼盘：</dt>
+                <dd>{{vm.shopName}}</dd>
+
+
+                <dt ng-if="vm.smallIndustryId">行业：</dt>
+                <dd ng-if="vm.smallIndustryId">{{vm.industryId | industryName}}－{{vm.smallIndustryId | industryName}}</dd>
+
+                <dt>区域：</dt>
+                <dd>{{vm.districtId | substr:0:4 | cityName}}{{vm.districtId | districtName}}{{vm.businessAreaId | districtName}}</dd>
+
+                <dt>地址：</dt>
+                <dd>{{vm.address}}</dd>
+
+                <dt>租金：</dt>
+                <dd>{{vm.rent}}</dd>
+
+                <dt>面积：</dt>
+                <dd>{{vm.area}}</dd>
+
+                <dt ng-if="vm.transferFee">转让费：</dt>
+                <dd ng-if="vm.transferFee">{{vm.transferFee}}万元</dd>
+
+                <dt ng-if="vm.transferType == vm.shopTransferType">是否空转：</dt>
+                <dd ng-if="vm.transferType == vm.shopTransferType">{{vm.emptyTransfer | emptyTransfer}}空转</dd>
+
+
+
+                <dt>经营状态：</dt>
+                <dd>{{vm.businessStatus | shopStatus}}</dd>
+
+                <dt>描述：</dt>
+                <dd class="col-lg-10 col-xs-8">{{vm.remark}}</dd>
+            </dl>
+
+
+
+        </form>
+    </div>
+
+    <div ng-show="vm.pluginId == vm.sitingPluginId">
+        <h4 class="lh65 05em">找店信息内容</h4>
+
+        <form class="form-horizontal" novalidate>
+
+            <div class="form-group">
+                <label class="col-sm-2 control-label">你可以：</label>
+                <div class="col-sm-10">
+                    <a type="button" class="btn btn-lg btn-info" ui-sref="index.main.post" ui-sref-opts="{reload: true}">继续发布信息</a>
+                    <a type="button" class="btn btn-primary btn-lg" ui-sref="index.main.business" ui-sref-opts="{reload: true}">返回我的业务</a>
+                </div>
+            </div>
+
+            <dl class="dl-horizontal xw-dl-horizontal">
+                <dt>手机：</dt>
+                <dd>{{vm.mobile}}</dd>
+
+                <dt>联系人：</dt>
+                <dd>{{vm.contact}}</dd>
+
+                <dt>行业：</dt>
+                <dd>{{vm.industryId | industryName}}－{{vm.smallIndustryId | industryName}}</dd>
+
+                <dt>区域：</dt>
+                <dd><span ng-repeat="districtId in vm.districtIds">{{districtId | substr:0:4 | cityName}}{{districtId | substr:0:6 | districtName}}{{districtId | districtName}}&nbsp;</span></dd>
+
+                <dt>面积：</dt>
+                <dd ng-if="vm.maxArea<999999">{{vm.minArea}}-{{vm.maxArea}}平米</dd>
+                <dd ng-if="vm.maxArea==999999">{{vm.minArea}}平米以上</dd>
+
+                <dt>租金：</dt>
+                <dd ng-if="vm.maxRent<999999">{{vm.minRent}}-{{vm.maxRent}}元</dd>
+                <dd ng-if="vm.maxRent==999999">{{vm.minRent}}元以上</dd>
+
+                <dt>要求：</dt>
+                <dd>{{vm.remark}}</dd>
+            </dl>
+        </form>
+    </div>
+
+    <div ng-show="vm.pluginId == vm.recruitmentPluginId">
+        <h4 class="lh65 05em">招聘信息内容</h4>
+
+        <form class="form-horizontal" novalidate>
+
+            <div class="form-group">
+                <label class="col-sm-2 control-label">你可以：</label>
+                <div class="col-sm-10">
+                    <a type="button" class="btn btn-lg btn-info" ui-sref="index.main.post" ui-sref-opts="{reload: true}">继续发布信息</a>
+                    <a type="button" class="btn btn-primary btn-lg" ui-sref="index.main.business" ui-sref-opts="{reload: true}">返回我的业务</a>
+                </div>
+            </div>
+
+            <dl class="dl-horizontal xw-dl-horizontal">
+                <dt>手机：</dt>
+                <dd>{{vm.mobile}}</dd>
+
+                <dt>联系人：</dt>
+                <dd>{{vm.contact}}</dd>
+
+                <dt>店名：</dt>
+                <dd>{{vm.shopName}}</dd>
+
+                <dt>行业：</dt>
+                <dd>{{vm.industryId | industryName}}－{{vm.smallIndustryId | industryName}}</dd>
+
+                <dt>区域：</dt>
+                <dd>{{vm.districtId | substr:0:4 | cityName}}{{vm.districtId | districtName}}{{vm.businessAreaId | districtName}}</dd>
+
+                <dt>地址：</dt>
+                <dd>{{vm.address}}</dd>
+
+                <dt>职位：</dt>
+                <dd><span ng-repeat="positionId in vm.positionIds">{{positionId | positionName}}&nbsp;</span></dd>
+
+                <dt>描述：</dt>
+                <dd class="col-lg-10">{{vm.remark}}</dd>
+            </dl>
+
+
+
+        </form>
+    </div>
+
+    <div ng-show="vm.pluginId == vm.reservationPluginId">
+        <h4 class="lh65 05em">消费信息内容</h4>
+
+        <form class="form-horizontal" novalidate>
+
+            <div class="form-group">
+                <label class="col-sm-2 control-label">你可以：</label>
+                <div class="col-sm-10">
+                    <a type="button" class="btn btn-lg btn-info" ui-sref="index.main.post" ui-sref-opts="{reload: true}">继续发布信息</a>
+                    <a type="button" class="btn btn-primary btn-lg" ui-sref="index.main.business" ui-sref-opts="{reload: true}">返回我的业务</a>
+                </div>
+            </div>
+
+            <dl class="dl-horizontal xw-dl-horizontal">
+                <dt >手机：</dt>
+                <dd>{{vm.mobile}}</dd>
+
+                <dt>联系人：</dt>
+                <dd>{{vm.contact}}</dd>
+
+                <dt>店名：</dt>
+                <dd>{{vm.shopName}}</dd>
+
+                <dt>行业：</dt>
+                <dd>{{vm.industryId | industryName}}－{{vm.smallIndustryId | industryName}}</dd>
+
+                <dt>区域：</dt>
+                <dd>{{vm.districtId | substr:0:4 | cityName}}{{vm.districtId | districtName}}{{vm.businessAreaId | districtName}}</dd>
+
+                <dt>地址：</dt>
+                <dd>{{vm.address}}</dd>
+
+                <dt>描述：</dt>
+                <dd>{{vm.remark}}</dd>
+            </dl>
+
+
+
+        </form>
+    </div>-->
+
+    <div class="cle"></div>
+</div>
+<div class="cle"></div>

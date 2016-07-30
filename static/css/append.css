@@ -1,0 +1,17 @@
+.xw-dl-horizontal dt {
+    margin-bottom: 8px;
+}
+.xw-dl-horizontal dd {
+    margin-bottom: 8px;
+}
+.xw-search .active {
+    color: #000;
+    font-weight: bold;
+}
+.xw-business .active {
+    color: #000;
+    font-weight: bold;
+}
+.danger {
+    color:#a94442;
+}

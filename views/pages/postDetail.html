@@ -1,0 +1,144 @@
+<section class="">
+    <ol class="breadcrumb ">
+        <li>信息详情</li>
+    </ol>
+</section>
+
+<div class=" clearfix">
+    <div class="divline">
+    <li><h4 >&nbsp; {{vm.detail.title}}</h4></li>
+    <hr>
+        <li>
+            <span class="col-md-4 col-sm-4 ">更新时间：{{vm.detail.createTime | date: 'yyyy-MM-dd HH:mm'}} </span>
+            <span class="col-sm-4 col-md-4 text-warning">信息编号:{{vm.opportunityId}}</span>
+            <span class="col-sm-4 col-md-4 ">
+                <a class="btn btn-info btn-xs pull-right" ng-if="vm.detail.status == vm.waitTake" href="javascript:void(0)" ng-click="vm.take()">领取业务</a>
+            </span>
+        </li>
+    </div>
+<hr>
+    <div class="divline">
+        <ul>
+            <li><h4 class="col-md-4 col-sm-4 mb10">信息详情</h4></li>
+        </ul>
+    </div>
+        <li class="col-md-5 col-sm-5" ng-if="vm.detail.pluginId == vm.transferPluginId || vm.detail.pluginId == vm.recruitmentPluginId || vm.detail.pluginId == vm.reservationPluginId">
+            <img ng-if="!vm.postPhotos.length" ng-src="{{vm.defaultPicUrl}}" width="100%" height="200">
+            <scroll-thumb ng-if="vm.postPhotos.length" big-pics="vm.postPhotos" small-pics="vm.postPhotos"></scroll-thumb>
+        </li>
+        <li class="col-md-7 col-sm-7" style="padding-top: 10px; padding-bottom: 10px; border: 0 1px 1px 0; border-color: #ddd;">
+            <dl class="dl-horizontal xw-dl-horizontal" ng-if="vm.detail.pluginId == vm.transferPluginId">
+
+                <dt ><span class="pr2em">手</span>机：</dt>
+                <dd>{{vm.detail.mobile}}</dd>
+
+                <dt><span class="pr2em">客</span>户：</dt>
+                <dd>{{vm.detail.contact}}</dd>
+
+                <dt><span class="pr2em">类</span>型：</dt>
+                <dd>{{vm.detail.content.type | transferType}}</dd>
+
+                <dt><span class="pr2em">店</span>名：</dt>
+                <dd>{{vm.detail.content.shopName}}</dd>
+
+                <dt><span class="pr2em">行</span>业：</dt>
+                <dd>{{vm.detail.content.industryId | substr:0:2 | industryName}}－{{vm.detail.content.industryId | industryName}}</dd>
+
+                <dt ng-if="vm.detail.content.area"><span class="pr2em">面</span>积：</dt>
+                <dd ng-if="vm.detail.content.area">{{vm.detail.content.area}}平</dd>
+
+                <dt ng-if="vm.detail.content.rent"><span class="pr2em">租</span>金：</dt>
+                <dd ng-if="vm.detail.content.rent">{{vm.detail.content.rent/100}}元</dd>
+
+                <dt><span class="pr2em">区</span>域：</dt>
+                <dd>{{vm.detail.content.districtId | substr:0:4 | cityName}}{{vm.detail.content.districtId | substr:0:6 | districtName}}{{vm.detail.content.districtId | districtName}}</dd>
+
+                <dt><span class="pr2em">地</span>址：</dt>
+                <dd>{{vm.detail.content.address}}</dd>
+
+                <dt><span class="pr2em">描</span>述：</dt>
+                <dd>{{vm.detail.description}}</dd>
+
+            </dl>
+
+            <dl class="dl-horizontal xw-dl-horizontal" ng-if="vm.detail.pluginId == vm.sitingPluginId">
+
+                <dt ><span class="pr2em">手</span>机：</dt>
+                <dd>{{vm.detail.mobile}}</dd>
+
+                <dt><span class="pr2em">客</span>户：</dt>
+                <dd>{{vm.detail.contact}}</dd>
+
+                <dt>求租行业：</dt>
+                <dd>{{vm.detail.content.industryId | substr:0:2 | industryName}}－{{vm.detail.content.industryId | industryName}}</dd>
+
+                <dt>期望区域：</dt>
+                <dd><span ng-repeat="districtId in vm.detail.content.districtIds">{{districtId | substr:0:4 | cityName}}{{districtId | substr:0:6 | districtName}}{{districtId | districtName}}&nbsp;</span></dd>
+
+                <dt>期望面积：</dt>
+                <dd>{{vm.detail.content.minArea}}-{{vm.detail.content.maxArea}}平</dd>
+
+                <dt>期望租金：</dt>
+                <dd ng-if="vm.detail.content.maxRent > 0">{{vm.detail.content.minRent/100}}-{{vm.detail.content.maxRent/100}}元</dd>
+                <dd ng-if="vm.detail.content.maxRent == 0">未知</dd>
+
+                <dt><span class="pr2em">描</span>述：</dt>
+                <dd>{{vm.detail.description}}</dd>
+
+            </dl>
+
+            <dl class="dl-horizontal xw-dl-horizontal" ng-if="vm.detail.pluginId == vm.recruitmentPluginId">
+
+                <dt><span class="pr2em">手</span>机：</dt>
+                <dd>{{vm.detail.mobile}}</dd>
+
+                <dt><span class="pr2em">客</span>户：</dt>
+                <dd>{{vm.detail.contact}}</dd>
+
+                <dt><span class="pr2em">店</span>名：</dt>
+                <dd>{{vm.detail.content.shopName}}</dd>
+
+                <dt><span class="pr2em">职</span>位：</dt>
+                <dd><span ng-repeat="positionId in vm.detail.content.positionIds">{{positionId | positionName}}&nbsp;</span></dd>
+
+                <dt><span class="pr2em">行</span>业：</dt>
+                <dd>{{vm.detail.content.industryId | substr:0:2 | industryName}}－{{vm.detail.content.industryId | industryName}}</dd>
+
+                <dt><span class="pr2em">区</span>域：</dt>
+                <dd>{{vm.detail.content.districtId | substr:0:4 | cityName}}{{vm.detail.content.districtId | substr:0:6 | districtName}}{{vm.detail.content.districtId | districtName}}</dd>
+
+                <dt><span class="pr2em">地</span>址：</dt>
+                <dd>{{vm.detail.content.address}}</dd>
+
+                <dt><span class="pr2em">描</span>述：</dt>
+                <dd>{{vm.detail.description}}</dd>
+            </dl>
+
+            <dl class="dl-horizontal xw-dl-horizontal" ng-if="vm.detail.pluginId == vm.reservationPluginId">
+
+                <dt ><span class="pr2em">手</span>机：</dt>
+                <dd>{{vm.detail.mobile}}</dd>
+
+                <dt><span class="pr2em">客</span>户：</dt>
+                <dd>{{vm.detail.contact}}</dd>
+
+                <dt><span class="pr2em">店</span>名：</dt>
+                <dd>{{vm.detail.content.shopName}}</dd>
+
+                <dt><span class="pr2em">行</span>业：</dt>
+                <dd>{{vm.detail.content.industryId | substr:0:2 | industryName}}－{{vm.detail.content.industryId | industryName}}</dd>
+
+                <dt><span class="pr2em">区</span>域：</dt>
+                <dd>{{vm.detail.content.districtId | substr:0:4 | cityName}}{{vm.detail.content.districtId | substr:0:6 | districtName}}{{vm.detail.content.districtId | districtName}}</dd>
+
+                <dt><span class="pr2em">地</span>址：</dt>
+                <dd>{{vm.detail.content.address}}</dd>
+
+                <dt><span class="pr2em">描</span>述：</dt>
+                <dd>{{vm.detail.description}}</dd>
+
+            </dl>
+        </li>
+    </div>
+
+</div>

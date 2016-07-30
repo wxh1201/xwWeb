@@ -1,0 +1,32 @@
+<div class="animate-switch" ng-switch-when="xw:recruitment">
+    <div class="row">
+        <div ng-if="!vm.requirement.length">
+            没有相关数据
+        </div>
+        <div ng-if="vm.requirement.length">
+            <div ng-repeat="recruitment in vm.requirement">
+                <button class="btn btn-info" ng-click="vm.refresh(recruitment.id)">刷新</button>
+                <button class="btn btn-info" ui-sref="index.main.recommendation({params:recruitment.id, pluginId:recruitment.pluginId})">推荐</button>
+                <button class="btn btn-info" ui-sref="index.main.requirementUpdate({requirementId:recruitment.id,shopId:vm.serviceDetail.shopId})">修改</button>
+                <ul class="service-detail-list ml30">
+                    <li>
+                        <span class="">标题:{{vm.pluginId | pluginIdFilter}}: {{recruitment.title}}</span>
+                    </li>
+                    <li>
+                        <span class="">招聘职位:{{recruitment.content.positionId | positionName}}</span>
+                    </li>
+                    <li>
+                        <span class="">招聘人数:{{recruitment.content.recruitNumber}}人</span>
+                    </li>
+                    <li>
+                        <span class="">地址:{{recruitment.content.shopAddress}}</span>
+                    </li>
+                    <li>
+                        <span class="">描述:{{recruitment.description}}</span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <hr>
+</div>

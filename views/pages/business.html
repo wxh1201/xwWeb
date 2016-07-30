@@ -1,0 +1,104 @@
+<section class="">
+    <ol class="breadcrumb ">
+        <li>我的业务</li>
+    </ol>
+</section>
+<div class="">
+
+    <div class="col-sm-12 clearfix xw-business">
+        <ul>
+            <li class="clearfix">
+                <span class="label label-default col-sm-1 col-xs-1">类型：</span>&nbsp;
+                &nbsp;<span><a href="javascript:void(0)" ng-class="{active: vm.pluginId == vm.allPluginId}"
+                               ng-click="vm.changePlugin(vm.allPluginId)">全部</a></span>
+                &nbsp;<span><a href="javascript:void(0)" ng-class="{active: vm.pluginId == vm.transferPluginId}"
+                               ng-click="vm.changePlugin(vm.transferPluginId)">转店</a></span>
+                &nbsp;<span><a href="javascript:void(0)" ng-class="{active: vm.pluginId == vm.sitingPluginId}"
+                               ng-click="vm.changePlugin(vm.sitingPluginId)">找店</a></span>
+                &nbsp;<span><a href="javascript:void(0)" ng-class="{active: vm.pluginId == vm.recruitmentPluginId}"
+                               ng-click="vm.changePlugin(vm.recruitmentPluginId)">招聘</a></span>
+                &nbsp;<span><a href="javascript:void(0)" ng-class="{active: vm.pluginId == vm.reservationPluginId}"
+                               ng-click="vm.changePlugin(vm.reservationPluginId)">消费</a></span>
+            </li>
+            <li class="clearfix">
+                <span class="label label-default col-sm-1 col-xs-1">状态：</span>&nbsp;
+                &nbsp;<span><a href="javascript:void(0)" ng-class="{active: vm.status == vm.inBusiness}"
+                               ng-click="vm.changeStatus(vm.inBusiness)">业务中</a></span>
+                &nbsp;<span><a href="javascript:void(0)" ng-class="{active: vm.status == vm.inContract}"
+                               ng-click="vm.changeStatus(vm.inContract)">签约中</a></span>
+                &nbsp;<span><a href="javascript:void(0)" ng-class="{active: vm.status == vm.finished}"
+                               ng-click="vm.changeStatus(vm.finished)">已成交</a></span>
+                &nbsp;<span><a href="javascript:void(0)" ng-class="{active: vm.status == vm.closed}"
+                               ng-click="vm.changeStatus(vm.closed)">已关闭</a></span>
+            </li>
+            <li class="clearfix">
+                <span class="label label-default col-sm-1 col-xs-1">排序：</span>&nbsp;
+                &nbsp;<span><a href="javascript:void(0)" ng-class="{active: vm.orderType == vm.takeTimeOrder}"
+                               ng-click="vm.changeOrderType(vm.takeTimeOrder)">领取时间</a></span>
+                &nbsp;<span><a href="javascript:void(0)" ng-class="{active: vm.orderType == vm.finishTimeOrder}"
+                               ng-click="vm.changeOrderType(vm.finishTimeOrder)">结束时间</a></span>
+            </li>
+        </ul>
+    </div>
+
+    <div class="cle"></div>
+    <hr>
+
+    <div class="w800p">
+        <div class="media borrad" ng-repeat="business in vm.list">
+            <!--图片-->
+            <div class="media-middle col-sm-2 ">
+                <a ui-sref="index.main.businessDetail({businessId:business.id})" target="_blank">
+                    <img ng-if="!business.photo" class="media-object" ng-src="{{vm.defaultPicUrl}}">
+                    <img ng-if="business.photo != ''" class="media-object" ng-src="{{business.photo}}">
+                </a>
+            </div>
+            <!--文字-->
+            <div class="media-body">
+                <!--左列-->
+                <div class="media-middle col-md-6 col-sm-6 lef">
+                    <h4 class="media-heading">
+                        <a ui-sref="index.main.businessDetail({businessId:business.id})" target="_blank">{{business.title}}</a>
+                    </h4>
+                    {{business.status | businessStatus}}<br>
+                    <span ng-if="business.status == vm.inBusiness || business.status == vm.inContract"
+                          ng-class="{danger: vm.isDanger(business.overdue)}"> {{business.overdue | timeDistance}}后过期</span>
+                </div>
+                <!--中列>
+                <div class="media-middle col-md-4 ">
+                  {{business.status | businessStatus}}
+                  <span ng-if="business.status == vm.inBusiness || business.status == vm.inContract" ng-class="{danger: vm.isDanger(business.overdue)}"> {{business.overdue | timeDistance}}后过期</span>
+                </div>
+                <右列-->
+                <div class="media-middle col-sm-6 col-md-6">
+                    <div ng-if="vm.status == vm.inBusiness || vm.status == vm.inContract">
+                        <ul>
+                            <li>
+                                <a href="javascript:void(0)" ng-click="vm.invalid(business.id)">信息无效</a></li>
+                            <li>
+                                <a href="javascript:void(0)" ng-click="vm.giveUp(business.id)">放弃业务</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="cle"></div>
+
+    <div class="row">
+        <div class="col-lg-5" style="line-height:34px;">
+            总数{{vm.totalCount}}条 共{{numPages}}页
+        </div>
+
+        <div class="col-sm-7 col-md-7">
+            <nav class="xw-pagination-container">
+                <uib-pagination previous-text="上一页" next-text="下一页" max-size="10" rotate="false" num-pages="numPages"
+                                total-items="vm.totalCount" items-per-page="vm.pageSize" ng-model="vm.currentPage"
+                                ng-change="vm.getList()"></uib-pagination>
+            </nav>
+        </div>
+    </div>
+</div>

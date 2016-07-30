@@ -1,0 +1,113 @@
+<section class="">
+    <ol class="breadcrumb ">
+        <li><a ui-sref="index.main.business">我的业务</a></li>
+        <li>推荐详情</li>
+    </ol>
+</section>
+
+<div class=" clearfix">
+    <h4 class="col-md-12 col-sm-12 pull-left mb10">{{vm.detail.requirement.title}}</h4>
+    <div class="divline">
+        <li><span class="col-md-12 col-sm-12 ">{{vm.detail.requirement.slogan}}</span></li>
+
+        <hr>
+        <li>
+      <span class="col-md-12 col-sm-12 clearfix">
+        推荐人：{{vm.detail.middleman.userName}}  （{{vm.detail.middleman.mobile}}）
+      </span>
+        </li>
+        <li>
+            <span class="col-md-4 col-sm-4 clearfix">推荐时间：{{vm.detail.recommendation.createTime | date: 'yyyy-MM-dd HH:mm'}}</span>
+            <span class="col-sm-4 col-md-4 text-warning">推荐编号： {{vm.detail.recommendation.id}}</span>
+        </li>
+        <hr>
+
+    </div>
+
+
+    <div ng-if="vm.preference">
+
+        <div class="det" ng-if="vm.pluginId == vm.transferPluginId">
+            <li class="col-md-12 col-sm-12 mb10">{{vm.preference.title}}</li>
+
+            <li class="col-md-2 col-sm-2">
+                <img ng-if="vm.detail.resource.avatarId != 0" ng-src="{{vm.detail.resource.avatar}}" width="100"
+                     height="100">
+                <img ng-if="vm.detail.resource.avatarId == 0" ng-src="{{vm.defaultPicUrl}}" width="100" height="100">
+            </li>
+            <li class="col-md-10 col-sm-10">{{vm.detail.resource.name}}（{{vm.detail.resource.mobile}}）</li>
+            <div class="row">
+                <dl class="dl-horizontal">
+                    <dt>求租行业：</dt>
+                    <dd>{{vm.preference.content.industryId | substr:0:2 |
+                        industryName}}－{{vm.preference.content.industryId | industryName}}
+                    </dd>
+                    <dt>期望区域：</dt>
+                    <dd><span ng-repeat="districtId in vm.preference.content.districtIds">{{districtId | substr:0:4 | cityName}}{{districtId | substr:0:6 | districtName}}{{districtId | districtName}}&nbsp;</span>
+                    </dd>
+                    <dt>期望面积：</dt>
+                    <dd>{{vm.preference.content.minArea}}-{{vm.preference.content.maxArea}}</dd>
+                    <dt>期望租金：</dt>
+                    <dd>{{vm.preference.content.minRent/100}}-{{vm.preference.content.maxRent/100}}</dd>
+                </dl>
+            </div>
+        </div>
+
+        <div class="det" ng-if="vm.pluginId == vm.sitingPluginId">
+            <li class="col-md-12 col-sm-12 mb10">{{vm.preference.title}}</li>
+
+            <li class="col-sm-2 col-md-2">
+                <img ng-if="vm.detail.resource.avatarId != 0" ng-src="{{vm.detail.resource.avatar}}" width="100%">
+                <img ng-if="vm.detail.resource.avatarId == 0" ng-src="{{vm.defaultPicUrl}}" width="100%">
+            </li>
+            <div class="row">{{vm.detail.resource.name}}（{{vm.detail.resource.mobile}}）</div>
+            <div class="row">
+                <dl class="dl-horizontal">
+                    <dt>区域：</dt>
+                    <dd>{{vm.preference.content.districtId | substr:0:4 | cityName}}{{vm.preference.content.districtId |
+                        substr:0:6 | districtName}}{{vm.preference.content.districtId | districtName}}
+                    </dd>
+                    <dt>行业：</dt>
+                    <dd>{{vm.preference.content.industryId | substr:0:2 |
+                        industryName}}－{{vm.preference.content.industryId | industryName}}
+                    </dd>
+                    <dt>面积：</dt>
+                    <dd>{{vm.preference.content.area}}</dd>
+                    <dt>租金：</dt>
+                    <dd>{{vm.preference.content.rent/100}}</dd>
+                    <!--<dt>店铺状态：</dt><dd></dd>-->
+                    <!--<dt>适合经营：</dt><dd></dd>-->
+                    <!--<dt>详情描述：</dt><dd></dd>-->
+                </dl>
+            </div>
+        </div>
+
+        <div class="det" ng-if="vm.pluginId == vm.recruitmentPluginId">
+            <li class="col-md-12 col-sm-12 mb10"><h4>{{vm.preference.title}}</h4></li>
+            <li class="col-sm-2 col-md-2">
+                <img ng-if="vm.detail.resource.avatarId != 0" ng-src="{{vm.detail.resource.avatar}}" width="100%">
+                <img ng-if="vm.detail.resource.avatarId == 0" ng-src="{{vm.defaultPicUrl}}" width="100%">
+            </li>
+            <li class="col-sm-10 col-md-10">
+                <h5 class="pt5 mb10">{{vm.detail.resource.name}}（{{vm.detail.resource.mobile}}）</h5>
+                <p class="pt5">职位：{{vm.preference.content.positionId | positionName}}</p>
+            </li>
+        </div>
+
+        <div class="clearfix"></div>
+    </div>
+
+    <div class="det" ng-if="!vm.preference">
+        <ul>
+            <li class="col-sm-2 col-md-2">
+                <img ng-if="vm.detail.resource.avatarId != 0" ng-src="{{vm.detail.resource.avatar}}" width="100%">
+                <img ng-if="vm.detail.resource.avatarId == 0" ng-src="{{vm.defaultPicUrl}}" width="100%">
+            </li>
+            <li class="col-sm-10 col-md-10">
+                <h5 class="pt5 mb10">{{vm.detail.resource.name}}（{{vm.detail.resource.mobile}}）</h5>
+                <p class="pt5">无偏好信息</p>
+            </li>
+        </ul>
+    </div>
+
+</div>

@@ -1,0 +1,46 @@
+<div class="modal-header">
+    <h3 class="modal-title">备注案例</h3>
+</div>
+<div class="modal-body">
+    <form name="remarkForm">
+        <div>
+            <div class="clearfix form-group">
+                <span>上传锦旗或合影:</span>
+                <div>
+                    <div id="thumbContainer">
+                        <span ng-repeat="photo in vm.photos">
+                            <thumb id={{photo.id}} url={{photo.url}} remove="vm.removeThumb(photo.id)"/>
+                        </span>
+                    </div>
+                    <button ng-disabled="vm.photos.length == 8" class="add" type="file"
+                            ngf-select="vm.uploadFile($file, $invalidFiles)"
+                            accept="image/*" ngf-max-size="2097152">
+                        <span class="glyphicon glyphicon-picture" aria-hidden="true"></span>
+                        <span class="glyphicon-class">添加图片</span>
+                    </button>
+                </div>
+            </div>
+
+            <div>
+                <span>{{vm.pluginId | pluginIdFilter}}过程:</span>
+                <div class="mt10">
+                    <textarea ng-model="vm.remarkContent" maxlength="300" required name="remarkContent" id="" cols="30" rows="10" placeholder="请描述{{vm.pluginId | pluginIdFilter}}过程" style="width: 80%"></textarea>
+                    <span ng-if="vm.remarkContent != ''">{{vm.remarkContent.length}}/300</span>
+                    <span ng-if="vm.remarkContent == ''">0/300</span>
+                </div>
+            </div>
+            <div ng-if="vm.submitted">
+                <span class="text-danger" ng-if="remarkForm.remarkContent.$error.required">{{vm.pluginId | pluginIdFilter}}过程必须</span>
+                <span class="text-danger" ng-if="remarkForm.remarkContent.$error.maxlength">{{vm.pluginId | pluginIdFilter}}过程不能超过300个字符</span>
+            </div>
+        </div>
+    </form>
+
+</div>
+<div class="modal-footer">
+    <button class="btn btn-primary" type="button" ng-click="vm.submit(remarkForm.$valid)">提交</button>
+    <button class="btn btn-warning" type="button" ng-click="vm.cancel()">取消</button>
+</div>
+
+
+

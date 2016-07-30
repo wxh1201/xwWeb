@@ -1,0 +1,51 @@
+<div class="w800p">
+    <li class="col-md-10 col-sm-10">
+        <h4>最新推荐</h4>
+    </li>
+    <li class="cle"></li>
+    <div class="mt20" ng-if="vm.list == null">
+    </div>
+    <div ng-if="vm.list != null">
+        <div class="media borrad " ng-repeat="recommend in vm.list">
+            <!--图片-->
+            <div class="media-middle col-sm-2 ">
+                <img class="media-object" ng-src="{{recommend.avatar}}"/>
+            </div>
+            <!--文字-->
+            <div class="media-body divline">
+                <!--title-->
+                <li class="text-left">
+                    <a class="col-sm-6 col-md-6" ui_sref="index.main.recommendDetail({id:recommend.id})"
+                       target="_blank">{{recommend.name}}</a>
+                    <span class="col-sm-6 col-md-6">{{recommend.preferenceTitle}}</span>
+                </li>
+                <!--中列-->
+                <li class="text-left">
+                    <span ng-if="recommend.middlemanType == vm.salesmanRecommend" class="col-sm-6 col-md-6 text-danger">{{recommend.middlemanName}}重点推荐</span>
+                    <span ng-if="recommend.middlemanType == vm.systemRecommend" class="col-sm-6 col-md-6">小旺推荐</span>
+                    <span ng-if="recommend.middlemanType == vm.selfRecommend" class="col-sm-6 col-md-6">自己联系</span>
+                    <span ng-if="recommend.middlemanType == vm.userRecommend" class="col-sm-6 col-md-6">{{recommend.middlemanName}}推荐</span>
+
+                    <span class="col-sm-4 col-md-4">{{recommend.recommendTime | recommendTime}}</span>
+                </li>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="cle"></div>
+
+</div>
+
+<div class="row">
+    <div class="col-lg-5" style="line-height:34px;">
+        总数{{vm.totalCount}}条 共{{numPages}}页
+    </div>
+    <div class="col-lg-7">
+        <nav class="xw-pagination-container">
+            <uib-pagination previous-text="上一页" next-text="下一页" max-size="10" rotate="false" num-pages="numPages"
+                            total-items="vm.totalCount" items-per-page="vm.pageSize" ng-model="vm.currentPage"
+                            ng-change="vm.getList()"></uib-pagination>
+        </nav>
+    </div>
+</div>

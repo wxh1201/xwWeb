@@ -1,0 +1,44 @@
+<div class="modal-header">
+  <h3 class="modal-title">放弃业务</h3>
+</div>
+<div class="modal-body">
+  <form name="giveUpBusinessForm">
+    <div class="radio">
+      <label>
+        <input type="radio" name="reason" ng-model="vm.reason" value="不接受先收费" required>
+        不接受先收费
+      </label>
+    </div>
+    <div class="radio">
+      <label>
+        <input type="radio" name="reason" ng-model="vm.reason" value="价格太高" required>
+        价格太高
+      </label>
+    </div>
+    <div class="radio">
+      <label>
+        <input type="radio" name="reason" ng-model="vm.reason" value="与其它平台/中介合作" required>
+        与其它平台/中介合作
+      </label>
+    </div>
+    <div class="radio">
+      <label>
+        <input type="radio" name="reason" ng-model="vm.reason" value="other" required>
+        其它原因
+      </label>
+    </div>
+    <div>
+      <textarea class="form-control" maxlength="300" ng-if="vm.reason == 'other'" name="otherReason" placeholder="请输入原因" ng-model="vm.otherReason" required></textarea>
+    </div>
+    <div ng-show="vm.submitted">
+      <span style="color:red;" ng-show="giveUpBusinessForm.reason.$error.required">请选择原因</span>
+      <span style="color:red;" ng-show="giveUpBusinessForm.otherReason.$error.required">请输入原因</span>
+      <span style="color:red;" ng-show="vm.errorMessage">{{vm.errorMessage}}</span>
+    </div>
+  </form>
+
+</div>
+<div class="modal-footer">
+  <button class="btn btn-primary" type="button" ng-click="vm.submit(giveUpBusinessForm.$valid)">确定,放弃业务</button>
+  <button class="btn btn-warning" type="button" ng-click="vm.cancel()">取消</button>
+</div>

@@ -1,0 +1,13 @@
+<div class="modal-header">
+    {{vm.info.title}}
+</div>
+<div class="modal-body text-center">
+    <span class="font-red">{{vm.info.content}}</span><br>
+    <span ng-class="vm.info.red">{{vm.info.note}}</span>
+</div>
+
+<div class="modal-footer">
+    <a class="btn btn-info" ng-repeat="b in vm.info.button" ui-sref="{{b.url}}" ng-click="vm.confirm()">
+        {{b.text}}
+    </a>
+</div>

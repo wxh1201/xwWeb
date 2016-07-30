@@ -1,0 +1,17 @@
+{
+  "name": "xw3-user-frontend",
+  "version": "1.0.0",
+  "description": "xw3 frontend for registered users",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "browser-sync": "^2.11.2",
+    "gulp": "^3.9.1",
+    "gulp-clean": "^0.3.2",
+    "gulp-notify": "^2.2.0"
+  }
+}

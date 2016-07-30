@@ -1,0 +1,55 @@
+
+<div class="animate-switch row" ng-switch-when="xw:transfer">
+    <div class="row">
+        <div ng-if="!vm.requirement.length">
+            没有相关数据
+        </div>
+        <div ng-if="vm.requirement.length" >
+            <div ng-repeat="requirement in vm.requirement">
+                <div class="row">
+                    <div class="col-md-5 col-sm-5">
+                        <img  ng-if="!vm.photos.length" ng-src="{{vm.defaultPicUrl}}" width="100%" height="200">
+                        <scroll-thumb ng-if="vm.photos.length" big-pics="vm.photos" small-pics="vm.photos"></scroll-thumb>
+                    </div>
+                    <div  class="col-md-7 col-sm-7">
+                        <ul class="service-detail-list">
+                            <li>
+                                <span class="">标题: {{requirement.pluginId  | pluginIdFilter}}: {{requirement.title}}</span>
+                            <li>
+                                <span class="">类型:{{requirement.content.type | reqTypeFilter}}</span>
+                            </li>
+                            <li>
+                                <span class="">行业:{{requirement.content.industryId | industryName }}</span>
+                            </li>
+                            <li>
+                                <span class="">面积:{{requirement.content.area}}平米</span>
+                            </li>
+                            <li>
+                                <span class="">租金:{{requirement.content.rent/100}}元/月</span>
+                             </li>
+                            <li>
+                                <span class="">转让费:{{requirement.content.cost/1000000 | number:2}} 万元</span>
+                            </li>
+                            <li>
+                                <span class="">经营状态:{{requirement.content.businessStatus | reqBusinessStatus}}-{{requirement.content.emptyTransfer | emptyTransfer}}空转</span>
+                            </li>
+                            <li>
+                                <span class="">区域:{{requirement.content.districtId | districtName}}</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="mt20 row">
+                    <h4>描述:</h4>
+                    <hr>
+                    <div>
+                        {{requirement.description}}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+</div>

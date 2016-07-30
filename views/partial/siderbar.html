@@ -1,0 +1,110 @@
+<div class="navbar-default sidebar" role="navigation" id="sideBar" ng-controller="siderbarController as vm">
+    <div class="panel-group" id="accordion">
+
+        <!-- 财务管理 -->
+        <!-- ng-if="permit['Managecontract_1101'] || permit['BusinessRewardStatistic_1101'] ||" permit['BusinessRewardSettlement_1101'] -->
+        <div class="panel panel-success">
+            <div class="panel-heading">
+                <h4 class="panel-title">
+                    <a data-toggle="collapse" href="#Finance">
+                        发布
+                    </a>
+                </h4>
+            </div>
+            <div id="Finance">
+                <div class="panel-body">
+                    <div class="siderbar-list" id="post">
+                        <a ui-sref="index.main.post" ui-sref-opts="{reload: true}">
+                            <i class="fa fa-edit fa-fw"></i>
+                            发布
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 商家管理 -->
+        <div  class="panel panel-success">
+            <div class="panel-heading">
+                <h4 class="panel-title">
+                    <a data-toggle="collapse" href="#business">
+                        我的
+                    </a>
+                </h4>
+            </div>
+            <div >
+                <div class="panel-body">
+
+                    <div class="siderbar-list" id="business">
+                        <a ui-sref="index.main.business" ui-sref-opts="{reload: true}">
+                            <i class="fa fa-bar-chart-o fa-fw"></i>
+                            我的业务<span></span></a>
+                    </div>
+                    <div class="siderbar-list" id="myServices">
+                        <a ui-sref="index.main.myServices" ui-sref-opts="{reload: true}">
+                            <i class="fa fa-bar-chart-o fa-fw"></i> 我的服务<span></span>
+                        </a>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+        <!-- 认证管理 -->
+        <div class="panel panel-success">
+            <div class="panel-heading">
+                <h4 class="panel-title">
+                    <a data-toggle="collapse" href="#authentication">
+                        业务大厅
+                    </a>
+                </h4>
+            </div>
+            <div ng-class="authenticationClass" id="authentication">
+                <div class="panel-body">
+
+                    <div class="siderbar-list" id="transfer">
+                        <a ui-sref="index.main.businessHall({pluginId:'transfer'})" ui-sref-opts="{reload: true}">
+                            <i class="fa fa-bar-chart-o fa-fw"></i> 转店业务大厅<span></span></a>
+                    </div>
+                    <div class="siderbar-list" id="siting">
+                        <a ui-sref="index.main.businessHall({pluginId:'siting'})" ui-sref-opts="{reload: true}">
+                            <i class="fa fa-bar-chart-o fa-fw"></i> 找店业务大厅<span></span></a>
+                    </div>
+                    <div class="siderbar-list" id="recruitment">
+                        <a ui-sref="index.main.businessHall({pluginId:'recruitment'})" ui-sref-opts="{reload: true}">
+                            <i class="fa fa-bar-chart-o fa-fw"></i> 招聘业务大厅<span></span></a>
+                    </div>
+                    <div class="siderbar-list" id="reservation">
+                        <a ui-sref="index.main.businessHall({pluginId:'reservation'})" ui-sref-opts="{reload: true}">
+                            <i class="fa fa-bar-chart-o fa-fw"></i> 消费业务大厅<span></span></a>
+                    </div>
+                    <!--<div class="siderbar-list" id="serviceHall">
+                        <a ui-sref="index.main.serviceHall" ui-sref-opts="{reload: true}">
+                            <i class="fa fa-bar-chart-o fa-fw"></i> 服务大厅<span></span></a>
+                    </div>-->
+                </div>
+            </div>
+        </div>
+        
+        <!-- 服务大厅 -->
+        <div class="panel panel-success">
+            <div class="panel-heading">
+                <h4 class="panel-title">
+                    <a data-toggle="collapse" href="#recommended-hall">服务大厅</a>
+                </h4>
+            </div>
+            <div ng-class="authenticationClass" id="recommended-hall">
+                <div class="panel-body">
+
+                    <div class="siderbar-list" id="serviceHall">
+                        <a ui-sref="index.main.serviceHall({serviceHall:'serviceHall'})" ui-sref-opts="{reload: true}">
+                            <i class="fa fa-bar-chart-o fa-fw"></i> 服务大厅<span></span></a>
+                    </div>
+                    
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+</div>

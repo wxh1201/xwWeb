@@ -1,0 +1,194 @@
+<section class="">
+    <ol class="breadcrumb ">
+        <li>为{{vm.pageTitle}}推荐客户</li>
+    </ol>
+</section>
+
+<div class="">
+
+    <!--<div class="col-sm-12 clearfix xw-myService">-->
+        <!--<ul>-->
+            <!--<li class="clearfix toolbar-line">-->
+                <!--<span class="label label-default col-sm-1 col-xs-1">推荐状态：</span>&nbsp;-->
+                <!--&nbsp;<span><a href="javascript:void(0)" ng-class="{active: vm.status == -1}" ng-modal="vm.status" value="-1"-->
+                               <!--ng-click="vm.changeStatus(-1)">全部</a></span>-->
+                <!--&nbsp;<span><a href="javascript:void(0)" ng-class="{active: vm.status == 0}"  ng-modal="vm.status" value="0"-->
+                               <!--ng-click="vm.changeStatus(0)" >未推荐</a></span>-->
+                <!--&nbsp;<span><a href="javascript:void(0)" ng-class="{active: vm.status == 1}" ng-modal="vm.status" value="1"-->
+                               <!--ng-click="vm.changeStatus(1)">已推荐</a></span>-->
+            <!--</li>-->
+            <!--<li class="clearfix toolbar-line">-->
+                <!--<span class="label label-default col-sm-1 col-xs-1" style="margin-top: 6px;">关键字搜索</span>&nbsp;-->
+                <!--&nbsp;<input ng-model="vm.mobile" type="tel" placeholder="输入资源号码">-->
+                <!--<button class="btn btn-info" ng-click="vm.getRecommendation()">搜索</button>-->
+            <!--</li>-->
+        <!--</ul>-->
+    <!--</div>-->
+
+
+    <div class="col-sm-12 clearfix xw-myService">
+        <form name="searchForm">
+            <ul>
+                    <li class="clearfix toolbar-line form-group">
+                    <!--<span class="mr10">-->
+                        <!--<span>推荐状态:</span>-->
+                        <!--<select class="select-s" name="plugin" ng-model="vm.status"-->
+                                <!--ng-init="vm.status = vm.statusSelect[0].value"-->
+                                <!--ng-options="status.value as status.name for status in vm.statusSelect">-->
+                        <!--</select>-->
+                    <!--</span>-->
+
+                    <!--选择行业-->
+                    <span class="mr10">
+                        <span>选择行业:</span>
+                        <select class="select-s" name="industry"  ng-model="vm.industryId"
+                                ng-change="vm.loadSmallIndustries(vm.industryId)"
+                                ng-options="industry.c as industry.n for industry in vm.industriesSelect">
+                            <option value="">全部</option>
+                        </select>
+                        <select class="select-s" name="smallIndustry" ng-model="vm.smallIndustryId"
+                                ng-options="smallIndustry.c as smallIndustry.n for smallIndustry in vm.smallIndustriesSelect">
+                            <option value="">全部</option>
+                        </select>
+                    </span>
+
+                    <!--选择区域-->
+                    <span class="mr10">
+                        <span>选择区域:</span>
+                        <!--<select class="select-s" name="city" ng-model="vm.cityId"-->
+                                <!--ng-init="vm.cityId = vm.cities[0].c"-->
+                                <!--ng-change="vm.loadDistricts(vm.cityId)"-->
+                                <!--ng-options="city.c as city.n for city in vm.cities">-->
+                        <!--</select>-->
+                        <select class="select-s" name="district"  ng-model="vm.districtId"
+                                ng-change="vm.loadBusinessAreas(vm.districtId)"
+                                ng-options="district.c as district.n for district in vm.districtsSelect">
+                            <option value="">全部</option>
+                        </select>
+                        <!--ng-if="vm.businessAreasSelect && vm.businessAreasSelect.length > 0"-->
+                        <select  class="select-s" name="businessArea" ng-model="vm.businessAreaId" ng-required="vm.districtId != undefined && vm.districtId != 0"
+                                ng-options="businessArea.c as businessArea.n for businessArea in vm.businessAreasSelect">
+                            <option value="">全部</option>
+                        </select>
+                     </span>
+                </li>
+
+                <li class="clearfix toolbar-line form-group">
+                    <span class="mr10">
+                        <span>面积:</span>
+                        <input class="input-s" type="number" ng-model="vm.minArea" name="minArea" min="0" >--<input class="input-s mr10" type="number" ng-model="vm.maxArea" name="maxArea" min="0" >m<sup>2</sup>
+                    </span>
+
+                    <!--排序-->
+                    <span class="mr10">
+                        <span>排序:</span>
+                        <select class="select-s" name="orderBy" ng-model="vm.orderBy"
+                                ng-init="vm.orderBy = vm.orderBySelect[0].value"
+                                ng-options="orderBy.value as orderBy.name for orderBy in vm.orderBySelect">
+                        </select>
+                    </span>
+                </li>
+
+                <li class="clearfix toolbar-line">
+                    <span>关键字搜索:</span>
+                    <input class="input-md" ng-model="vm.mobile" name="mobile" type="tel" placeholder="输入资源号码">
+                    <button class="btn btn-info" ng-if="vm.pluginId == vm.transferPluginId" ng-click="vm.searchMatchSiting(searchForm.$valid)">搜索</button>
+                    <button class="btn btn-info" ng-if="vm.pluginId == vm.sitingPluginId" ng-click="vm.searchMatchTransfer(searchForm.$valid)">搜索</button>
+                </li>
+                <li>
+                    <div ng-show="vm.submitted">
+                        <span style="color:red" ng-show="searchForm.businessArea.$error.required">选择具体商圈</span>
+                        <span style="color:red" ng-show="searchForm.minArea.$error.min">面积不能为负数</span>
+                        <span style="color:red" ng-show="searchForm.maxArea.$error.min">面积不能为负数</span>
+                    </div>
+                    <!--<div ng-show="(searchForm.minArea.$touched || searchForm.maxArea.$touched) && vm.minArea != '' && vm.maxArea != ''">-->
+                    <div ng-show="vm.areaError == true">
+                        <span style="color:red" ng-show="vm.minArea > vm.maxArea">最小面积不能大于等于最大面积</span>
+                    </div>
+                </li>
+            </ul>
+        </form>
+    </div>
+
+    <div class="cle"></div>
+    <hr>
+
+    <div>
+        <table class="table table-bordered">
+            <thead>
+            <tr>
+                <th class=""></th>
+                <th>推荐</th>
+                <th>
+                    <span ng-if="vm.pluginId == vm.sitingPluginId">找店</span><span ng-if="vm.pluginId == vm.transferPluginId">转店</span>资源
+                </th>
+                <th>
+                    <span ng-if="vm.pluginId == vm.sitingPluginId">找店</span><span ng-if="vm.pluginId == vm.transferPluginId">转店</span>要求
+                </th>
+                <th>有效性</th>
+                <th>发布时间</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr id="id{{recommendation.id}}" ng-repeat="recommendation in vm.recommendation">
+                <td class="">
+                    <!--<input type="checkbox" value="{{recommendation.id}}">-->
+                    <input type="checkbox" value="{{recommendation.checked}}" ng-model="recommendation.checked" ng-disabled="recommendation.hasRecommendation == 1">
+                </td>
+                <td>
+                    <button class="btn btn-info" ng-show="recommendation.hasRecommendation == 0" ng-click="vm.singelRecommend(recommendation.id)">推荐</button>
+                    <button class="btn btn-info" ng-show="recommendation.hasRecommendation == 1" disabled="disabled">已推荐</button>
+                </td>
+                <td>
+                    <div>姓名:{{recommendation.contact}}</span></div>
+                    <div>电话:<span>{{recommendation.mobile}}</span></div>
+                </td>
+                <td>
+                    <span>{{recommendation.title}}</span>
+                </td>
+                <td>
+                    <span ng-class="{'text-danger': recommendation.validity==1, 'text-info':recommendation.validity==2 || recommendation.validity==3}">{{recommendation.validity | validutyFilter}}</span>
+                </td>
+                <td>
+                    <span>{{recommendation.createTime |  date: 'yyyy-MM-dd HH:mm:ss'}}</span>
+                </td>
+            </tr>
+            <tr ng-if="!vm.recommendation.length > 0 && vm.complete == true">
+                <td colspan="6"> 无资源可推荐 </td>
+            </tr>
+            </tbody>
+        </table>
+        <button class="btn btn-info" ng-click="vm.batchRecommend()">推荐</button>
+    </div>
+
+    <!--分页-->
+    <div class="row " ng-show="vm.pluginId == vm.transferPluginId">
+        <div class="col-lg-4 " style="line-height:34px;margin: 20px 0;">
+            总数{{vm.totalCount}}条 共{{numPages}}页
+        </div>
+        <div class="col-lg-2" style="line-height:34px;text-align: right;margin: 20px 0;">
+            <span >每页{{vm.pageSize}}条</span>
+        </div>
+        <div class="col-lg-6 col-sm-6 col-md-7">
+            <nav class="xw-pagination-container" >
+                <uib-pagination previous-text="上一页" next-text="下一页" max-size="5" rotate="false" num-pages="numPages" total-items="vm.totalCount" items-per-page="vm.pageSize" ng-model="vm.currentPage" ng-change="vm.pageMatchSiting()"></uib-pagination>
+            </nav>
+        </div>
+    </div>
+
+    <div class="row" ng-show="vm.pluginId == vm.sitingPluginId">
+        <div class="col-lg-4 " style="line-height:34px;margin: 20px 0;">
+            总数{{vm.totalCount}}条 共{{numPages}}页
+        </div>
+        <div class="col-lg-2" style="line-height:34px;text-align: right;margin: 20px 0;">
+            <span >每页{{vm.pageSize}}条</span>
+        </div>
+        <div class="col-lg-6 col-sm-6 col-md-7">
+            <nav class="xw-pagination-container" >
+                <uib-pagination previous-text="上一页" next-text="下一页" max-size="5" rotate="false" num-pages="numPages" total-items="vm.totalCount" items-per-page="vm.pageSize" ng-model="vm.currentPage" ng-change="vm.pageMatchTransfer()"></uib-pagination>
+            </nav>
+        </div>
+    </div>
+</div>
+
+

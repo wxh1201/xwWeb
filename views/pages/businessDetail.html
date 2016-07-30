@@ -1,0 +1,89 @@
+<section class="">
+    <ol class="breadcrumb ">
+        <li><a ui-sref="index.main.business">我的业务</a></li>
+        <li>业务详情</li>
+    </ol>
+</section>
+
+<div class=" clearfix">
+    <h4>&nbsp; {{vm.detail.title}}</h4>
+    <hr>
+    <div class="divline" ng-if="vm.detail.status == vm.inBusiness || vm.detail.status == vm.inContract">
+        <li class="mb10">
+            <span ng-if="vm.detail.pluginId == 'xw:transfer' || vm.detail.pluginId == 'xw:siting'" class="col-sm-3 col-md-2">编号： <span>{{vm.detail.id}}</span></span>
+            <!--<span ng-if="vm.detail.pluginId == 'xw:transfer' || vm.detail.pluginId == 'xw:siting'" class="col-sm-3 col-md-2">被推荐次数：<span>{{vm.detail.recommendAmount}}次</span></span>-->
+            <span class="col-sm-3 col-md-2">业务状态：<span class="font-red" >{{vm.detail.status | businessStatus}}</span></span>
+            <span ng-if="vm.detail.pluginId == 'xw:transfer' || vm.detail.pluginId == 'xw:siting'" class="col-sm-3 col-md-2">有效性：<span class="font-red">{{vm.detail.validity | validutyFilter}}</span></span>
+            <span ><span class="text-warning" ng-if="isWarnRemark(vm.detail.lastCommentTime)">{{vm.detail.lastCommentTime | remarkWarn}}内须填写备注，否则自动释放业务</span></span>
+        </li>
+        <li>
+            <span class="col-sm-12 col-md-4 col-xs-12">领取时间：{{vm.detail.receiveTime | date: 'yyyy-MM-dd HH:mm'}}</span>
+      <span class="col-sm-12 col-md-4 col-xs-12" ng-if="!isDanger(vm.detail.overdueTime)">
+          过期时间：
+        <span>{{vm.detail.overdueTime | date: 'yyyy-MM-dd HH:mm'}} （{{vm.detail.overdueTime | timeDistance}}后过期）</span>
+      </span>
+      <span class="col-sm-12 col-md-4 col-xs-12" ng-if="isDanger(vm.detail.overdueTime)">
+          过期时间：
+        <span class="text-danger">{{vm.detail.overdueTime | date: 'yyyy-MM-dd HH:mm'}} （{{vm.detail.overdueTime | timeDistance}}后过期）</span>
+        <input ng-if="vm.detail.overdueNum == 0" type="button" value="延期" class="btn btn-info btn-xs" ng-click="postpone(vm.detail.id)">
+      </span>
+            <span class="col-sm-12 col-md-4 col-xs-12" ng-if="vm.detail.pluginId == 'xw:transfer' || vm.detail.pluginId == 'xw:siting'">发布时间：{{vm.detail.createTime | date: 'yyyy-MM-dd HH:mm'}}</span>
+        </li>
+        <li class="col-xs-12 mt20 mb10">
+            <button ng-click="vm.improvePost(vm.opportunityId,vm.detail.id)" class="btn btn-info">完善信息</button>
+            <!--<span ng-if="vm.vm.detail.status == vm.inContract" style="color:#c9c9c9">商户正在签约中，暂不能修改完善信息。</span>-->
+            <span ><input type="button" value="信息无效" class="btn btn-info invalid ml15" ng-click="vm.invalid()"></span>
+            <span ><input type="button" value="放弃业务" class="btn btn-info giveup ml15" ng-click="vm.giveUp()"></span>
+            <!--<span ng-if="vm.detail.pluginId == 'xw:transfer' || vm.detail.pluginId == 'xw:siting'"><input type="button" value="被推荐给找店(88)次，给TA推荐" class="btn btn-info giveup ml15" ng-click="giveUp(vm.detail.id)"></span>-->
+        </li>
+    </div>
+
+    <div class="divline" ng-if="vm.detail.status == vm.finished">
+        <li>
+            <span class="col-md-3 col-sm-3 clearfix">{{vm.detail.status | businessStatus}}</span>
+            <span class="col-sm-3 col-md-3 text-warning">服务方式：{{vm.detail.priceInfo.mode | serviceMode:vm.detail.pluginId}}</span>
+            <span class="col-md-3 col-sm-3 clearfix">服务价格：{{vm.detail.priceInfo.discountPrice/100}}</span>
+            <span class="col-md-3 col-sm-3 clearfix" ng-if="(vm.detail.pluginId == vm.transferPluginId || vm.detail.pluginId == vm.sitingPluginId) && vm.detail.priceInfo.prepay < 100">预付金额：{{vm.detail.priceInfo.prepayPrice/100}}</span>
+        </li>
+        <li>
+            <span class="col-md-3 col-sm-3 clearfix">领取时间：{{vm.detail.receiveTime | date: 'yyyy-MM-dd HH:mm'}}</span>
+      <span class="col-sm-3 col-md-3">
+          结束时间：<span>{{vm.detail.closeTime | date: 'yyyy-MM-dd HH:mm'}}</span>
+      </span>
+        </li>
+    </div>
+
+    <div class="divline" ng-if="vm.detail.status == vm.closed">
+        <li>
+            <span class="col-md-4 col-sm-4 clearfix">{{vm.detail.status | businessStatus}}</span>
+            <span class="col-sm-4 col-md-4 text-warning">关闭原因：{{vm.detail.reason}}</span>
+    <span class="col-md-4 col-sm-4 clearfix text-right" ng-if="vm.postDetail.status == vm.postWaitTake">
+        <input type="button" value="重新领取" class="btn btn-info btn-xs" ng-click="vm.take(vm.opportunityId)">
+    </span>
+        </li>
+        <li>
+            <span class="col-md-4 col-sm-4 clearfix">领取时间：{{vm.detail.receiveTime | date: 'yyyy-MM-dd HH:mm'}}</span>
+      <span class="col-sm-4 col-md-4">
+          结束时间：<span class="text-danger">{{vm.detail.closeTime | date: 'yyyy-MM-dd HH:mm'}}</span>
+      </span>
+        </li>
+    </div>
+
+    <uib-tabset active="vm.tabIndex">
+            <uib-tab index="0" heading="详情" select = "vm.tabSelected(0)">
+            <div ng-if="vm.isRenderedTab[0]" ng-include="'views/partial/oppDetail/detail.html'" ng-controller="businessOppDetailController as vm"></div>
+        </uib-tab>
+        <uib-tab index="1" heading="业务备注" select = "vm.tabSelected(1)">
+            <div ng-if="vm.isRenderedTab[1]" ng-include="'views/partial/oppDetail/remark.html'" ng-controller="businessOppRemarkController as vm"></div>
+        </uib-tab>
+        <uib-tab index="2" heading="推荐记录" select = "vm.tabSelected(2)">
+            <div ng-if="vm.isRenderedTab[2]" ng-include="'views/partial/oppDetail/recommend.html'" ng-controller="recommendController as vm"></div>
+        </uib-tab>
+       <uib-tab index="3" heading="案例" select = "vm.tabSelected(3)">
+            <div ng-if="vm.isRenderedTab[3]" ng-include="'views/partial/oppDetail/example.html'" ng-controller="exampleController as vm"></div>
+        </uib-tab>
+        <uib-tab index="4" heading="签约" select = "vm.tabSelected(4)">
+            <div ng-if="vm.isRenderedTab[4]"  ng-include="'views/partial/oppDetail/price.html'" ng-controller="priceController as vm"></div>
+        </uib-tab>
+    </uib-tabset>
+</div>

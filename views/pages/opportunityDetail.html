@@ -1,0 +1,24 @@
+<section class="">
+    <ol class="breadcrumb ">
+        <li>{{vm.info.title}} 详情</li>
+    </ol>
+</section>
+
+<div class="">
+    <div ng-if="vm.info.status == 0" class="btn btn-info mb10" ng-click="vm.collect()">领取业务</div>
+    <!--<div class="btn btn-info mb10" ng-click="vm.addRemark()">添加备注</div>-->
+    <span ng-if="vm.info.status != 0" >
+        领取提示：<span class="font-red">{{vm.oppStatus}}</span>
+    </span>
+    <div class="cle"></div>
+    <div class="line"></div>
+
+    <uib-tabset active="vm.activeTab">
+        <uib-tab index="0" heading="详情">
+            <div ng-include="'views/partial/oppDetail/detail.html'" ng-controller="businessOppDetailController as vm"></div>
+        </uib-tab>
+        <uib-tab index="1" heading="业务备注">
+            <div ng-include="'views/partial/oppDetail/remark.html'" ng-controller="businessOppRemarkController as vm"></div>
+        </uib-tab>
+    </uib-tabset>
+</div>

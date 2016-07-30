@@ -1,0 +1,19 @@
+<div class="animate-switch" ng-switch-when="xw:reservation">
+    <div class="row">
+        <div ng-if="vm.serviceDetail == null">
+            没有相关数据
+        </div>
+        <div ng-if="vm.serviceDetail != null">
+            <div class="col-md-7 col-sm-7">
+                <ul class="service-detail-list ml30" >
+                    <li>
+                        <span class="">行业:{{vm.serviceDetail.shopIndustry | industryName }}</span>
+                    </li>
+                    <li>
+                        <span class="">地址:{{vm.serviceDetail.shopAddress}}</span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>

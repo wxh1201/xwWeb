@@ -1,0 +1,111 @@
+<header class="main txtwhite">
+    <div class="container has-feedback" >
+
+        <div class="col-sm-3 col-md-3 col-xs-3">
+            <div class="logo" title="我的业务">
+                <h1 style="position: absolute; right: 0px; top: 8px; cursor:pointer" ui-sref="index.main.business" ui-sref-opts="{reload: true}">铺铺旺</h1>
+            </div>
+            <a ui-sref="index.main.city" class="city"><span class="curcity"> {{vm.cityId | cityName}}</span><span class="glyphicon glyphicon-map-marker"></span></a>
+        </div>
+
+        <form class="col-sm-5 col-md-5 col-xs-5 form-inline">
+            <div  style="width: 85px; float: left;margin-right: 20px;">
+                <a type="submit" class="btn btn-default" ui-sref="index.main.post" ui-sref-opts="{reload: true}">发布信息</a>
+            </div>
+            <div class="col-sm-7 col-md-7 col-xs-7 input-group pull-left" >
+                <input type="text" class="form-control" placeholder="手机号码、标题" ng-model="vm.keyword">
+                <span class="input-group-btn">
+                    <button class="btn btn-warning" type="submit" ng-click="vm.newSearch()">搜索</button>
+                </span>
+            </div>
+        </form>
+
+        <div class="col-sm-4 col-md-4 col-xs-4 pull-right text-right hidnam" >
+            欢迎您，{{vm.nickname}}！<a ui-sref="index.logout" class="gotologin"> 退出</a>
+        </div>
+
+    </div>
+</header>
+
+<div>
+    <section class="container">
+        <ol class="breadcrumb ">
+            <li class="active">搜索结果</li>
+        </ol>
+    </section>
+
+    <div class="container" >
+        <div class="col-sm-12 divline xw-search" >
+            <ul>
+                <li>
+                    <span>总共为您搜索到{{vm.totalCount}}个结果</span>
+                </li>
+                <hr>
+                <li>
+                    <span class="label label-default col-sm-1 col-xs-1">类型：</span>&nbsp;
+                    &nbsp;<span><a href="javascript:void(0)" ng-class="{active: vm.pluginId == vm.allPluginId}" ng-click="vm.changePlugin(vm.allPluginId)">全部</a></span>
+                    &nbsp;<span><a  href="javascript:void(0)" ng-class="{active: vm.pluginId == vm.transferPluginId}" ng-click="vm.changePlugin(vm.transferPluginId)">转店</a></span>
+                    &nbsp;<span><a  href="javascript:void(0)" ng-class="{active: vm.pluginId == vm.sitingPluginId}" ng-click="vm.changePlugin(vm.sitingPluginId)">找店</a></span>
+                    &nbsp;<span><a  href="javascript:void(0)" ng-class="{active: vm.pluginId == vm.recruitmentPluginId}" ng-click="vm.changePlugin(vm.recruitmentPluginId)">招聘</a></span>
+                    &nbsp;<span><a  href="javascript:void(0)" ng-class="{active: vm.pluginId == vm.reservationPluginId}" ng-click="vm.changePlugin(vm.reservationPluginId)">消费</a></span>
+                </li>
+                <li>
+                    <span class="label label-default col-sm-1 col-xs-1">状态：</span>&nbsp;
+                    &nbsp;<span><a href="javascript:void(0)" ng-class="{active: vm.status == vm.allStatus}" ng-click="vm.changeStatus(vm.allStatus)">全部</a></span>
+                    &nbsp;<span><a href="javascript:void(0)" ng-class="{active: vm.status == vm.waitTake}" ng-click="vm.changeStatus(vm.waitTake)">待领取</a></span>
+                    &nbsp;<span><a href="javascript:void(0)" ng-class="{active: vm.status == vm.inBusiness}" ng-click="vm.changeStatus(vm.inBusiness)">业务中</a></span>
+                    &nbsp;<span><a href="javascript:void(0)" ng-class="{active: vm.status == vm.hasFee}" ng-click="vm.changeStatus(vm.hasFee)">已收费</a></span>
+                    &nbsp;<span><a href="javascript:void(0)" ng-class="{active: vm.status == vm.hasTimeout}" ng-click="vm.changeStatus(vm.hasTimeout)">已过期</a></span>
+                </li>
+                <hr>
+            </ul>
+        </div>
+        <hr>
+
+        <div class="w800p">
+            <div class="media borrad" ng-repeat="post in vm.searchResult">
+                <!--图片-->
+                <div class="media-middle col-sm-2 " ng-if="post.photo">
+                    <a ui-sref="index.main.postDetail({id:post.id})" target="_blank">
+                        <img ng-if="!post.photo.url" class="media-object" ng-src="{{vm.defaultPicUrl}}">
+                        <img ng-if="post.photo.url" class="media-object" ng-src="{{post.photo.url}}">
+                    </a>
+                </div>
+                <!--文字-->
+                <div class="media-body">
+                    <!--左列-->
+                    <div class="media-middle col-md-6 col-sm-6 lef">
+                        <h4 class="media-heading">
+                            <a ui-sref="index.main.postDetail({id:post.id})" target="_blank">{{post.title}}</a>
+                        </h4>
+                        {{post.content}}<br/>
+                        {{post.createTime | date: 'yyyy-MM-dd HH:mm'}}<br/>
+                        {{post.status | postStatus}} <span class="text-danger"></span>
+                    </div>
+                    <!--右列-->
+                    <div class="media-middle col-sm-3 col-md-6  col-xs-12">
+                        <a ng-if="post.status == vm.waitTake" href="javascript:void(0)" ng-click="vm.take(post.id)">领取业务</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="cle"></div>
+
+        <div class="row">
+            <div class="col-lg-5" style="line-height:34px;">
+                总数{{vm.totalCount}}条 共{{numPages}}页
+            </div>
+
+            <div class="col-lg-7">
+                <nav class="xw-pagination-container">
+                    <uib-pagination previous-text="上一页" next-text="下一页" max-size="10" rotate="false" num-pages="numPages" total-items="vm.totalCount" items-per-page="vm.pageSize" ng-model="vm.currentPage" ng-change="vm.search()"></uib-pagination>
+                </nav>
+            </div>
+        </div>
+
+    </div>
+
+    <p class="cpr top40"> &copy;xw18.com </p>
+</div>

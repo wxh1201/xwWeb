@@ -1,0 +1,157 @@
+<section >
+    <ol class="breadcrumb ">
+        <li>{{vm.pluginId | pluginIdFilter}}业务大厅</li>
+    </ol>
+</section>
+
+<div >
+    <form class="form-inline clearfix" ng-if="vm.isIdentify">
+        <div class="form-group">
+<!--            <label class="opportunity-control-label">类型：</label>
+            <select class="form-control" title="category" ng-model="vm.pluginId" ng-change="vm.disableInput()">
+                <option value="all:all">全部类型</option>
+                <option value="xw:transfer">转店</option>
+                <option value="xw:siting">找店</option>
+                <option value="xw:recruitment">招聘</option>
+                <option value="xw:reservation">消费</option>
+            </select>-->
+            <label class="opportunity-control-label">行业：</label>
+            <select class="form-control" title="category"
+                    ng-model="vm.industryId"
+                    ng-change="vm.loadSmallIndustries(vm.industryId)"
+                    ng-options="industry.c as industry.n for industry in vm.industry">
+                <option value="">行业</option>
+            </select>
+            <select class="form-control" title="category"
+                    ng-model="vm.smallIndustryId"
+                    ng-options="industry.c as industry.n for industry in vm.smallIndustry">
+                <option value="">小行业</option>
+            </select>
+            <label class="opportunity-control-label">区域：</label>
+            <select class="form-control" title="category"
+                    ng-model="vm.districtId"
+                    ng-options="district.c as district.n for district in vm.district"
+                    ng-change="vm.loadBusinessAreas(vm.districtId)">
+                <option value="">选择区域</option>
+            </select>
+            <select class="form-control" title="category"
+                    ng-model="vm.businessAreaId"
+                    ng-options="businessArea.c as businessArea.n for businessArea in vm.businessArea">
+                <option value="">选择商圈</option>
+            </select>
+            <br>
+            <span ng-if="vm.areaDisable">
+                <label class="opportunity-control-label">面积：</label>
+                <input class="form-control" type="number" ng-model="vm.minArea" placeholder="最小面积"> - <input class="form-control" type="number" ng-model="vm.maxArea" placeholder="最大面积"> ㎡
+                <!--<label class="opportunity-control-label">录入账号：</label>
+                <input class="form-control" type="text" placeholder="输入账号">-->
+                <br>
+            </span>
+            <label ng-if="vm.queryAreaMsg != ''" class="opportunity-control-label"></label><span ng-if="vm.queryAreaMsg != ''" class="font-red">{{vm.queryAreaMsg}}</span>
+            <br ng-if="vm.queryAreaMsg != ''">
+            <label class="opportunity-control-label">发布时间：</label>
+            <span class="input-group">
+                <input class="form-control" placeholder="开始时间" type="text" is-open="vm.publishDateStartCollaspse" uib-datepicker-popup="yyyy-MM-dd" ng-model="vm.publishDateStart">
+                <span class="input-group-btn">
+                    <button type="button" class="btn btn-default form-control" ng-click="vm.publishDateStartCollaspse = true;"><i class="glyphicon glyphicon-calendar"></i></button>
+                </span>
+            </span> -
+            <span class="input-group">
+                <input class="form-control" placeholder="结束时间" type="text" is-open="vm.publishDateEndCollaspse" uib-datepicker-popup="yyyy-MM-dd" ng-model="vm.publishDateEnd">
+                <span class="input-group-btn">
+                    <button type="button" class="btn btn-default form-control" ng-click="vm.publishDateEndCollaspse = true;"><i class="glyphicon glyphicon-calendar"></i></button>
+                </span>
+            </span>
+            <!--<select class="form-control" title="order" ng-model="vm.order">
+                <option value="postDate">按发布时间倒序</option>
+                <option value="revampDate">按修改时间倒序</option>
+            </select>-->
+            <button type="button" class="btn btn-info" ng-click="vm.fireQueryOrSearch('query')">查询</button>
+            <br>
+            <label ng-if="vm.queryDateMsg != ''" class="opportunity-control-label"></label><span ng-if="vm.queryDateMsg != ''" class="font-red">{{vm.queryDateMsg}}</span>
+        </div>
+        <div >
+            <label class=" opportunity-control-label">关键字搜索：</label>
+            <input type="text" ng-model="vm.keyword" ng-keypress="vm.enterPress($event)" class="form-control" id="exampleInputName2" placeholder="输入手机号码/店名/标题">
+            <button type="button" class="btn btn-info" ng-click="vm.fireQueryOrSearch('search')">搜索</button>
+        </div>
+    </form>
+    <div class="line clearfix"></div>
+    <div ng-if="vm.showWarning" class="alert alert-danger clearfix" role="alert">
+        <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+        <span class="sr-only">Error:</span>
+        {{vm.warning}}
+    </div>
+    <div class="media borrad" ng-repeat="i in vm.list">
+            <!--图片-->
+            <div class="media-middle col-md-1 col-lg-1 col-xs-1">
+                <a ui-sref="index.main.opportunityDetail({oppId:i.id})" class="list-img"  target="_blank">
+                    <img ng-if="i.photo.url == null" ng-src="{{vm.defaultPicUrl}}">
+                    <img class="media-object" ng-src="{{i.photo.url}}">
+                </a>
+            </div>
+            <!--文字-->
+            <div class="media-body">
+                <!--左列-->
+                <div class="media-middle col-md-3 col-lg-3 col-xs-3 lef">
+                    <h4 class="media-heading f-l mr10">
+                        <a ui-sref="index.main.opportunityDetail({oppId:i.id})" target="_blank">{{i.title}}</a>
+                    </h4>
+                    <span class="label label-warning">{{i.pluginId | pluginIdFilter}}</span>
+                    <span class="label label-info" ng-if="i.isMerchantPost">商家发布</span>
+                    <span class="label label-info" ng-if="i.serviceId != 0">试用</span><br/><br/>
+                    <span ng-if="i.tramsferStatus">{{i.tramsferStatus}}<br></span>
+                    <span ng-if="i.industry">{{i.industry}}<br></span>
+                    <span ng-if="i.positionIds && i.positionIds.length > 0">职位：<span ng-repeat="position in i.positionIds">{{position | positionName}}<span ng-if="!$last">、</span></span></span>
+                </div>
+                <!--中列>
+                <div class="media-middle col-md-4 ">
+                  {{business.status | businessStatus}}
+                  <span ng-if="business.status == vm.inBusiness || business.status == vm.inContract" ng-class="{danger: vm.isDanger(business.overdue)}"> {{business.overdue | timeDistance}}后过期</span>
+                </div>
+                <右列-->
+                <div class="media-middle col-md-2 col-xs-2 col-lg-2 lef">
+                    <span ng-if="i.pluginId == 'xw:transfer'">
+                        <span>面积：{{i.area}}平米</span><br>
+                        <span>租金：{{i.rent/100}}元/月</span><br>
+                        <span>转让费：{{i.cost/1000000}}万元</span>
+                    </span>
+                    <span ng-if="i.pluginId == 'xw:siting'">
+                        <span>期望面积：{{i.minArea}} - {{i.maxArea}}平米</span><br>
+                        <span>期望租金：{{i.minRent/100}} - {{i.maxRent/100}}元/月</span>
+                    </span>
+                </div>
+                <div class="media-middle col-md-3 col-xs-3 col-lg-3 lef">
+                    <span >
+                        <span>联系人：{{i.contract}}</span><br>
+                        <span>电话：{{i.mobile}}</span><br>
+                        <span>地址：{{i.address}}</span><br>
+                    </span>
+                </div>
+                <div class="media-middle col-md-2 col-xs-2 col-lg-2 lef">
+                    发布时间：<br><span>{{i.createTime | date: 'yyyy-MM-dd HH:mm:ss'}}</span>
+                </div>
+                <div class="media-middle col-md-1 col-lg-1 col-xs-1 lef">
+                    状态：<br><span>{{i.status | postStatus}}</span>
+                </div>
+                <div class="media-middle col-md-1 col-lg-1 col-xs-1">
+                    <button class="btn btn-info btn-xs mb10" ng-if="i.status == 0" ng-click="vm.collect(i.id,i.pluginId,$index)">领取任务</button>
+                    <button class="btn btn-info btn-xs mb10" ng-click="vm.addRemark(i.id)">添加备注</button>
+                    <a ui-sref="index.main.opportunityDetail({oppId:i.id,activeTab:1})" target="_blank" class="btn btn-info btn-xs">查看备注</a>
+                </div>
+            </div>
+        </div>
+    <div >
+        <div class="col-lg-4 " style="line-height:34px;margin: 20px 0;">
+            总数{{vm.totalCount}}条 共{{numPages}}页
+        </div>
+        <div class="col-lg-2" style="line-height:34px;text-align: right;margin: 20px 0;">
+            <span >每页{{vm.pageSize}}条</span>
+        </div>
+        <div class="col-lg-6 col-sm-6 col-md-7">
+            <nav class="xw-pagination-container">
+                <uib-pagination previous-text="上一页" next-text="下一页" max-size="10" rotate="false" num-pages="numPages" total-items="vm.totalCount" items-per-page="vm.pageSize" ng-model="vm.currentPage" ng-change="vm.getMyServicesList()"></uib-pagination>
+            </nav>
+        </div>
+    </div>
+</div>

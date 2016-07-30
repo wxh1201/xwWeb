@@ -1,0 +1,54 @@
+<div class="tip text-info">
+    温馨提示：领取服务开始，填写服务记录的时间间隔不能超过５天，否则其他人可以领取该服务<br>
+    服务已结束、已过期、已放弃的不能添加服务记录
+</div>
+
+<div ng-hide="vm.serviceStatus > 1 || vm.status != 1">
+    <form name="historyForm">
+        <textarea class="form-control history-content" ng-model="vm.historyContent" placeholder="请输入备服务记录内容" name="historyContent" id="" cols="30" rows="3" required maxlength="300">
+
+        </textarea>
+        <div ng-if="vm.historySubmited">
+            <div class="text-danger" ng-if="historyForm.historyContent.$error.required">服务记录必填</div>
+            <div class="text-danger" ng-if="historyForm.historyContent.$error.maxlength">服务记录不能超过300字符</div>
+        </div>
+    </form>
+
+    <div class="radio">
+        <div class="hidden"><input type="radio" name="optionsRadios" id="optionsRadios1" value="option1"></div>
+        <span class="text-danger">（服务记录客户可见）</span>
+    </div>
+
+    <button class="btn btn-info" ng-click="vm.addServiceHistory(historyForm.$valid)" ng-disabled="vm.serviceStatus > 1 ">提交服务记录</button>
+</div>
+
+<div class="mt20">
+    <h4>服务记录是商户可以查看到的服务备注</h4>
+    <ul class="mt20">
+        <li class="history-list" ng-repeat="serviceHistory in vm.serviceHistory">
+            <img class="list-avatar" ng-if="!remark.avatarUrl" ng-src="static/img/xw_ic_avatar_default.png" alt="">
+            <img class="list-avatar" ng-if="remark.avatarUrl" ng-src="serviceHistory.avatarUrl" alt="">
+            <div class="list-info">
+                <div class="name">{{serviceHistory.nickname}}</div>
+                <div class="time">{{serviceHistory.createTime | date: 'yyyy-MM-dd HH:mm:ss'}}</div>
+            </div>
+            <div class="list-content col-xs-8 col-md-9 col-lg-9">
+                {{serviceHistory.content}}
+            </div>
+        </li>
+    </ul>
+</div>
+<!--分页-->
+<div class="row">
+    <div class="col-lg-4 " style="line-height:34px;margin: 20px 0;">
+        总数{{vm.totalHistoryCount}}条 共{{numPages}}页
+    </div>
+    <div class="col-lg-2" style="line-height:34px;text-align: right;margin: 20px 0;">
+        <span >每页{{vm.pageSize}}条</span>
+    </div>
+    <div class="col-lg-6 col-sm-6 col-md-7">
+        <nav class="xw-pagination-container">
+            <uib-pagination previous-text="上一页" next-text="下一页" max-size="10" rotate="false" num-pages="numPages" total-items="vm.totalHistoryCount" items-per-page="vm.pageSize" ng-model="vm.historyCurrentPage" ng-change="vm.pageGetServiceHistoryList()"></uib-pagination>
+        </nav>
+    </div>
+</div>
